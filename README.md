@@ -1,5 +1,5 @@
 # Promocity
-Aplicação cliente que manipula o banco do promocity. 
+Aplicação cliente que manipula o banco do promocity (http://www.github.com/armandossrecife/promocity). 
 
 Features
 ---
@@ -18,7 +18,7 @@ Sobre as operações para execução da aplicação
 
 2. É preciso ter o mysql 5 instalado na sua instância.
 
-3. Rode o script de banco de dados e cadastre o usuário admin.
+3. Rode o script de banco de dados e cadastre o usuário admin (armando) com senha armando.
 
 4. Limpe o projeto via comando clean do maven.
 ```
@@ -28,7 +28,7 @@ $mvn clean
 ```
 $mvn test
 ```
-6. Execute a classe principal (BackendApplication) do projeto via maven. 
+6. Execute a classe principal (SystemApplication) do projeto via maven. 
 ```
 $mvn spring-boot:run
 ```
@@ -43,10 +43,7 @@ Characteristics
 * Spring Security for basic login with permissions;
 * Thymeleaf para view;
 * Mysql Database or others;
-* Basic customer crud;
-* Basic user crud;
-* Basic repository crud
-* Basic statistics about repository
+* Basic entity crud;
 
 TODO
 ---
