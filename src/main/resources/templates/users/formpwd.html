@@ -1,0 +1,54 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout">
+<head>
+    <title>Cadastro de Usuário</title>
+</head>
+<body>
+<section layout:fragment="header">
+    <h1>Cadastro de Usuários</h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="active">Cadastro de Usuários</li>
+    </ol>
+</section>
+<div layout:fragment="content">
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title">Formulário</h3>
+            <div class="box-tools pull-right">
+                <a href="/users" type="button" class="btn btn-box-tool"><i class="fa fa-list-ul"></i></a>
+            </div>
+        </div>
+        <form data-toggle="validator" role="form" th:object="${user}" th:action="@{/users/saveedited}" method="post">
+            <div class="box-body">
+                <input type="hidden" th:field="*{id}"/>
+
+                <div class="form-group">
+                    <label for="Username">Username</label>
+                    <input type="text" required="true" class="form-control" th:field="*{username}" id="username" readonly="readonly"/>
+                </div>
+                <div class="form-group">
+                    <label for="Username">Senha original</label>
+                    <input type="password" required="true" class="form-control" name="password" id="password" />
+                </div>                
+                <div class="form-group">
+                    <label for="Username">Nova Senha</label>
+                    <input type="password" required="true" class="form-control" name="newpassword" id="newpassword" />
+                </div>
+                    <div class="form-group">
+                    <label for="Username">Confirma Senha</label>
+                    <input type="password" required="true" class="form-control" name="confirmnewpassword" id="confirmnewpassword" />
+                </div>                
+                <div class="form-group">
+                    <label for="Ativo">Ativo</label>
+                    <input type="text" required="true" class="form-control" th:field="*{enabled}" id="enabled" />
+                </div>
+            </div>
+            <div class="box-footer">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

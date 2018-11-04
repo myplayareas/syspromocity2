@@ -1,0 +1,45 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sd="http://www.thymeleaf.org/spring-data" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout">
+<head>
+    <title>Controle de Permissões</title>
+</head>
+<body>
+<section layout:fragment="header">
+<h1>Permissões</h1>
+<ol class="breadcrumb">
+    <li><a href="/"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+    <li class="active">Permissões</li>
+</ol>
+</section>
+<div layout:fragment="content">
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title">Listagem</h3>
+            <div class="box-tools pull-right">
+                <a href="#" type="button" class="btn btn-box-tool"><i class="fa fa-plus"></i></a>
+                <br clear="all" />
+            </div>
+        </div>
+        <div class="box-body no-padding">
+            <table class="table table-striped">
+                <tr>
+                	<th>Usuario</th>
+                    <th>Permissões</th>
+                </tr>
+				<tr>
+					<td>Usuario x1</td>
+					<td>Permissões [p1, p2, ...]</td>
+				</tr>
+					<tr>
+					<td>Usuario x2</td>
+					<td>Permissões [p1]</td>
+				</tr>
+				
+            </table>
+        </div>
+        <div class="box-footer clearfix">
+        </div>
+    </div>
+</div>
+</body>
+</html>

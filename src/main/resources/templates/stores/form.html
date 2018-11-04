@@ -1,0 +1,68 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout">
+<head>
+    <title>Cadastro de Loja</title>
+</head>
+<body>
+<section layout:fragment="header">
+    <h1>Cadastro de Loja</h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="active">Cadastro de Loja</li>
+    </ol>
+</section>
+<div layout:fragment="content">
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title">Formulário</h3>
+            <div class="box-tools pull-right">
+                <a href="/stores" type="button" class="btn btn-box-tool"><i class="fa fa-list-ul"></i></a>
+            </div>
+        </div>
+        <form data-toggle="validator" role="form" th:object="${store}" th:action="@{/stores/save}" method="post">
+            <div class="box-body">
+                <input type="hidden" th:field="*{id}"/>
+
+                <div class="form-group">
+                    <label for="name">Nome</label>
+                    <input type="text" required="true" class="form-control" th:field="*{name}" id="name" />
+                </div>
+                
+                                <div class="form-group">
+                    <label for="address">Endereço</label>
+                    <input type="text" required="true" class="form-control" th:field="*{address}" id="address" />
+                </div>
+                
+                                <div class="form-group">
+                    <label for="city">Cidade</label>
+                    <input type="text" required="true" class="form-control" th:field="*{city}" id="city" />
+                </div>
+                
+                <div class="form-group">
+                    <label for="state">Estado</label>
+                    <input type="text" required="true" class="form-control" th:field="*{state}" id="state" />
+                </div>
+                
+                <div class="form-group">
+                    <label for="latitude">Latitude</label>
+                    <input type="text" required="true" class="form-control" th:field="*{latitude}" id="latitude" />
+                </div>
+                
+                <div class="form-group">
+                    <label for="longitude">Longitude</label>
+                    <input type="text" required="true" class="form-control" th:field="*{longitude}" id="longitude" />
+                </div>
+                <div class="form-group">
+                    <label for="radius">Raio</label>
+                    <input type="text" required="true" class="form-control" th:field="*{radius}" id="radius" />
+                </div>
+                
+            </div>
+            <div class="box-footer">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
