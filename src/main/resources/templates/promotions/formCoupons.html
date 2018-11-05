@@ -1,14 +1,14 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout">
 <head>
-    <title>Cadastro de Promoção</title>
+    <title>Cadastro de Cupom na Promoção ID</title>
 </head>
 <body>
 <section layout:fragment="header">
-    <h1>Cadastro de Promoção</h1>
+    <h1>Cadastro de Cupom na Promoção id</h1>
     <ol class="breadcrumb">
         <li><a href="/"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li class="active">Cadastro de Promoão</li>
+        <li class="active">Cadastro de Cupom na Promoção id</li>
     </ol>
 </section>
 <div layout:fragment="content">
@@ -16,10 +16,10 @@
         <div class="box-header with-border">
             <h3 class="box-title">Formulário</h3>
             <div class="box-tools pull-right">
-                <a href="/promotions" type="button" class="btn btn-box-tool"><i class="fa fa-list-ul"></i></a>
+                <a href="/promotions/idPromotion/coupons" type="button" class="btn btn-box-tool"><i class="fa fa-list-ul"></i></a>
             </div>
         </div>
-        <form data-toggle="validator" role="form" th:object="${promotion}" th:action="@{/promotions/save}" method="post">
+        <form data-toggle="validator" role="form" th:object="${coupon}" th:action="@{/promotions/idPromotion/coupons/save}" method="post">
             <div class="box-body">
                 <input type="hidden" th:field="*{id}"/>
 
@@ -28,22 +28,20 @@
                     <input type="text" required="true" class="form-control" th:field="*{description}" id="description" />
                 </div>
                 <div class="form-group">
-                    <label for="fromDate">De (yyyy/mm/dd)</label>
-                    <input type="text" required="true" class="form-control" th:field="*{fromDate}" id="fromDate" />
+                    <label for="discount">Desconto</label>
+                    <input type="text" required="true" class="form-control" th:field="*{discount}" id="discount" />
                 </div>
                 
                 <div class="form-group">
-                    <label for="toDate">Até (yyyy/mm/dd)</label>
-                    <input type="text" required="true" class="form-control" th:field="*{toDate}" id="toDate" />
+                    <label for="qrCode">QRCode</label>
+                    <input type="text" required="true" class="form-control" th:field="*{qrCode}" id="qrCode" />
                 </div>
                 
             </div>
             <div class="box-footer">
                 <button type="submit" class="btn btn-primary">Salvar</button>
             </div>
-            
         </form>
-                         
     </div>
 </div>
 </body>

@@ -43,7 +43,29 @@
             </div>
             
         </form>
-                         
+        
+            <div class="box-body no-padding">
+            <table class="table table-striped">
+                <tr>
+                    <th>ID</th>
+                    <th>Descrição</th>
+                    <th>Desconto</th>
+                    <th>QRCode</th>
+                    <th>Ações</th>
+                </tr>
+                <tr th:each="row : ${list}">
+                    <td th:text="${row.id}"></td>
+                    <td th:text="${row.description}"></td>
+                    <td th:text="${row.discount}"></td>
+                    <td th:text="${row.qrCode}"></td> 
+                    <td>
+                       <a th:href="${'/coupons/edit/' + row.id}">editar</a> -
+                        <a th:href="${'/coupons/delete/' + row.id}">excluir</a>
+                    </td>
+                </tr>
+            	</table>
+        	</div>
+        
     </div>
 </div>
 </body>

@@ -43,7 +43,7 @@ public class StoreController {
         return "stores/list";
 
     }
-
+    //TODO inserir uma lista de promoções em uma tabela de promoções com as ações (inserir, editar, remover)
     @RequestMapping("/stores/add")
     public String add(Model model) {
 
@@ -52,6 +52,7 @@ public class StoreController {
 
     }
 
+  //TODO para a loja selecionada listar as promoções associados com uma tabela de promoões com as ações (inserir, editar, remover)
     @RequestMapping("/stores/edit/{id}")
     public String edit(@PathVariable Long id, Model model) {
 
@@ -60,6 +61,7 @@ public class StoreController {
 
     }
 
+   //TODO para a loja selecionada listar as promoções associados com uma tabela de promoções com as ações (inserir, editar, remover)
     @RequestMapping(value = "/stores/save", method = RequestMethod.POST)
     public String save(Store store, final RedirectAttributes ra) {
 
