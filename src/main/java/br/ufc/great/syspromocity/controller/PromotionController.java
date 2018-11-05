@@ -66,6 +66,7 @@ public class PromotionController {
     	
     	this.listCoupons = listCoupons;    	
         model.addAttribute("promotion", promotionService.get(id));  
+        model.addAttribute("idPromotion", id);
         model.addAttribute("list", listCoupons);
 
         return "promotions/formEdit";
@@ -89,9 +90,9 @@ public class PromotionController {
     }
     
     @RequestMapping(value="/promotions/{id}/coupons", method=RequestMethod.GET)
-    public String listCoupons(@PathVariable("id") Integer id, Model model) {
+    public String listCoupons(@PathVariable("id") Long id, Model model) {
     	List<Coupon> listCoupons = promotionService.get(Long.valueOf(id)).getCoupons();
-
+   
     	model.addAttribute("idPromotion", id);
         model.addAttribute("list", listCoupons);
         
@@ -119,5 +120,87 @@ public class PromotionController {
         ra.addFlashAttribute("successFlash", "Promoção foi salva com novo cupom.");
         return "redirect:/promotions";
     }
+    
+    //Editar um cupom de uma promoção promotions/edit/idPromotion/coupons/edit/idCoupon
+    /*
+     * Dada uma promoção, 
+     * recuperar a lista de cupons
+     * Dada a lista de cupons, localizar um cupom
+     */
+    @RequestMapping("/promotions/edit/{idPromotion}/coupons/edit/{idCoupon}")
+    public String editCoupon(@PathVariable Long idPromotion, @PathVariable Long idCoupon, Model model) {
+    	List<Coupon> listCoupons = promotionService.get(Long.valueOf(idPromotion)).getCoupons();
+    	Coupon coupon = new Coupon();
+    	
+    	this.listCoupons = listCoupons;
+    	//Procura o cupom, na lista de cupons da promoção, que vai ser editado
+    	for (Coupon element : listCoupons) {
+    		if (element.getId()==idCoupon) {
+    			coupon.setId(idCoupon);
+    			coupon.setDescription(element.getDescription());
+    			coupon.setDiscount(element.getDiscount());
+    			coupon.setQrCode(element.getQrCode());
+    		}
+    	}
+    	
+        model.addAttribute("promotion", promotionService.get(idPromotion));  
+        model.addAttribute("idPromotion", idPromotion);
+        model.addAttribute("list", listCoupons);
+        model.addAttribute("coupon", coupon);
+        model.addAttribute("idCoupon", idCoupon);
 
+        return "promotions/formEditCoupon";
+
+    }
+
+    //Salvar um cupom de uma promoção promotions/idPromotion/coupons/save/idCoupon
+    /*
+     * Data uma promoção, 
+     * e dado cupom, 
+     * salvar o cupom na lista da promoção 
+     * e atualizar a lista da promoção
+     */
+    @RequestMapping(value = "/promotions/{idPromotion}/coupons/save/{idCoupon}", method = RequestMethod.POST)
+    public String saveCoupon(@PathVariable("idPromotion") Integer idPromotion, @PathVariable("idCoupon") Integer idCoupon, Coupon coupon, final RedirectAttributes ra) {
+    	Promotion promotion = promotionService.get(Long.valueOf(idPromotion));
+    	
+    	//Procura o cupom, com os dados antigos, na lista de cupons da promoção
+    	for (Coupon element : promotion.getCoupons()) {
+    		if (element.getId()==Long.valueOf(idCoupon)) {
+    			//remove o cupom antigo da lista de promoções
+    			promotion.getCoupons().remove(element);
+    			break;
+    		}    		
+    	}
+    	//adiciona o cupom, com novos dados, na lista de cupons da promoção
+    	promotion.getCoupons().add(coupon);
+    	
+    	//salva a promoção com os novos dados de cupom
+        Promotion save = promotionService.save(promotion);
+        
+        ra.addFlashAttribute("successFlash", "Os novos dados do cupom foi salvo na Promoção.");
+        return "redirect:/promotions";
+    }
+
+    ///Remover um cupom de uma promoção promotions/edit/idPromotion/coupons/edit/idCoupon
+    @RequestMapping(value = "/promotions/edit/{idPromotion}/coupons/delete/{idCoupon}")
+    public String deleteCoupon(@PathVariable("idPromotion") Integer idPromotion, @PathVariable("idCoupon") Integer idCoupon, final RedirectAttributes ra) {
+    	Promotion promotion = promotionService.get(Long.valueOf(idPromotion));
+    	
+    	//Procura o cupom na lista de cupons da promoção
+    	for (Coupon element : promotion.getCoupons()) {
+    		if (element.getId()==Long.valueOf(idCoupon)) {
+    			//remove o cupom da lista de promoções
+    			promotion.getCoupons().remove(element);
+    			break;
+    		}    		
+    	}
+    	
+    	//salva a promoção depois do cupom removido
+        Promotion save = promotionService.save(promotion);
+        
+        ra.addFlashAttribute("successFlash", "Os novos dados do cupom foi salvo na Promoção.");
+        return "redirect:/promotions";
+    }
+    
 }

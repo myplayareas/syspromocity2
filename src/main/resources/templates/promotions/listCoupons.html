@@ -36,8 +36,8 @@
                     <td th:text="${row.discount}"></td>
                     <td th:text="${row.qrCode}"></td> 
                     <td>
-                       <a th:href="${'/coupons/edit/' + row.id}">editar</a> -
-                        <a th:href="${'/coupons/delete/' + row.id}">excluir</a>
+                       <a th:href="${'/promotions/edit/'+idPromotion+'/coupons/edit/' + row.id}">editar</a> -
+                        <a th:href="${'/promotions/edit/'+idPromotion+'/coupons/delete/' + row.id}">excluir</a>                        
                     </td>
                 </tr>
             </table>

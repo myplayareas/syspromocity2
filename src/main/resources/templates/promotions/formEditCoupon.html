@@ -1,14 +1,14 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout">
 <head>
-    <title>Cadastro de Cupom na Promoção ID</title>
+    <title>Edita Cupom na Promoção ID</title>
 </head>
 <body>
 <section layout:fragment="header">
-    <h1>Cadastro de Cupom na Promoção id</h1>
+    <h1>Edita Cupom na Promoção id</h1>
     <ol class="breadcrumb">
         <li><a href="/"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li class="active">Cadastro de Cupom na Promoção id</li>
+        <li class="active">Edita Cupom na Promoção id</li>
     </ol>
 </section>
 <div layout:fragment="content">
@@ -19,7 +19,7 @@
                 <a th:href="${'/promotions/'+idPromotion+'/coupons'}" type="button" class="btn btn-box-tool"><i class="fa fa-list-ul"></i></a>
             </div>
         </div>
-        <form data-toggle="validator" role="form" th:object="${coupon}" th:action="${'/promotions/'+idPromotion+'/coupons/save'}" method="post">
+        <form data-toggle="validator" role="form" th:object="${coupon}" th:action="${'/promotions/'+idPromotion+'/coupons/save/'+idCoupon}" method="post">
             <div class="box-body">
                 <input type="hidden" th:field="*{id}"/>
 
