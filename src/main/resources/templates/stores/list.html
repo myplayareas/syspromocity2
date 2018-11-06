@@ -44,7 +44,8 @@
                     <td th:text="${row.radius}"></td> 
                     <td>
                         <a th:href="${'/stores/edit/' + row.id}">editar</a> -
-                        <a th:href="${'/stores/delete/' + row.id}">excluir</a>
+                        <a th:href="${'/stores/delete/' + row.id}">excluir</a> - 
+                        <a th:href="${'/stores/' + row.id + '/promotions'}">Promoções</a>
                     </td>
                 </tr>
             </table>
