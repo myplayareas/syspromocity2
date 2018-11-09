@@ -10,6 +10,7 @@ Features
 * CRUD de promoções
 * CRUD de cupons
 * Camada de segurança
+* Box contendo mapa das lojas cadastradas
 
 Sobre as operações para execução da aplicação
 ---
