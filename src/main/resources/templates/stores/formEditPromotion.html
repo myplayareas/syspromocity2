@@ -19,6 +19,10 @@
                 <a th:href="${'/stores/'+idStore+'/promotions'}" type="button" class="btn btn-box-tool"><i class="fa fa-list-ul"></i></a>
             </div>
         </div>
+        
+        <script src="/plugins/jQuery/jQuery-2.2.0.min.js"></script>
+		<script src="/plugins/input-mask/jquery.inputmask.js"></script>	
+					
         <form data-toggle="validator" role="form" th:object="${promotion}" th:action="${'/stores/'+idStore+'/promotions/save/'+idPromotion}" method="post">
             <div class="box-body">
                 <input type="hidden" th:field="*{id}"/>
@@ -41,6 +45,28 @@
             </div>
         </form>
     </div>
+
+<!-- Page script -->
+<script type="text/javascript">
+$j=jQuery.noConflict();
+$j(document).ready(function () {
+    $j("#fromDate").inputmask('9999/99/99', {
+        greedy: false,
+        showMaskOnFocus: true,
+        showMaskOnHover: false,
+        noValuePatching: true
+    });
+
+    $j("#toDate").inputmask('9999/99/99', {
+        greedy: false,
+        showMaskOnFocus: true,
+        showMaskOnHover: false,
+        noValuePatching: true
+    });
+
+});
+</script>
+
 </div>
 </body>
 </html>
