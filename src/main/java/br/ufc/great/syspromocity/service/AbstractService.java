@@ -50,4 +50,7 @@ public abstract class AbstractService<T extends AbstractModel<Long>, Long extend
         getRepository().save(entity);
     }
 
+    public long count() {
+    	return getRepository().count();
+    }
 }

@@ -5,9 +5,11 @@
 </head>
 <body>
 <section layout:fragment="header">
-<h1>Cupons da Promoção</h1>
+<h1 th:text="${'Cupons da Promoção '+idPromotion}"></h1>
 <ol class="breadcrumb">
     <li><a href="/"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+    <li><a href="/stores/1"><i class="active"></i> Lojas</a></li>
+    <li><a href="#"><i class="active"></i>Promoções da Loja ID</a></li>
     <li class="active">Cupons da Promoção</li>
 </ol>
 </section>

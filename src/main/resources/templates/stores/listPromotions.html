@@ -5,10 +5,11 @@
 </head>
 <body>
 <section layout:fragment="header">
-<h1>Promoções da Loja ID</h1>
+<h1 th:text="${'Promoções da Loja '+idStore}"></h1>
 <ol class="breadcrumb">
     <li><a href="/"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li class="active">Promoções da Loja Id</li>
+    <li><a href="/stores/1"><i class="active"></i> Lojas</a></li>
+    <li class="active">Promoções da Loja</li>
 </ol>
 </section>
 <div layout:fragment="content">
