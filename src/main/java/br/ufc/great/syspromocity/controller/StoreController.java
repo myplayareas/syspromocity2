@@ -61,7 +61,7 @@ public class StoreController {
 
     @RequestMapping("/stores/edit/{id}")
     public String edit(@PathVariable Long id, Model model) {
-
+    	this.listPromotions = storeService.get(id).getPromotionList();
         model.addAttribute("store", storeService.get(id));
         return "stores/form";
 
@@ -69,7 +69,7 @@ public class StoreController {
 
     @RequestMapping(value = "/stores/save", method = RequestMethod.POST)
     public String save(Store store, final RedirectAttributes ra) {
-
+    	store.setPromotionList(this.listPromotions);
         Store save = storeService.save(store);
         ra.addFlashAttribute("successFlash", "Loja foi salva com sucesso.");
         return "redirect:/stores";
@@ -78,7 +78,7 @@ public class StoreController {
     
     //save new Promotion
     @RequestMapping(value = "/stores/{id}/promotions/save", method = RequestMethod.POST)
-    public String save(@PathVariable("id") Integer id,Promotion promotion, final RedirectAttributes ra) {
+    public String savePromotion(@PathVariable("id") Integer id,Promotion promotion, final RedirectAttributes ra) {
     	
     	Store store = storeService.get(Long.valueOf(id));
     	store.getPromotionList().add(promotion);

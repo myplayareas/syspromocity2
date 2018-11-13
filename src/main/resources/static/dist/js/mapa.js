@@ -4,7 +4,7 @@ var infoBox = [];
 var markers = [];
 
 function initialize() {	
-	var centro = {lat:-5.057573, lng:-42.794717};
+	var centro = {lat:-3.7281295, lng:-38.4954897};
 
 	var latlng = new google.maps.LatLng(centro);
 	
