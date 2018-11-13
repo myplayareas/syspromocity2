@@ -16,6 +16,7 @@ public abstract class AbstractModel<Long extends Serializable> implements Serial
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name="id")
     private Long id;
 
     public Long getId() {
