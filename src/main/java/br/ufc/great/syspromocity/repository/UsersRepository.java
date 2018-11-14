@@ -12,5 +12,6 @@ import br.ufc.great.syspromocity.model.Users;
  */
 @Repository
 public interface UsersRepository extends JpaRepository<Users, Long>{
+	Users findByUsername(String username);
 
 }

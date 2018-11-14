@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,48 +16,75 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.ufc.great.syspromocity.model.Coupon;
 import br.ufc.great.syspromocity.model.Promotion;
+import br.ufc.great.syspromocity.model.Users;
 import br.ufc.great.syspromocity.service.PromotionsService;
+import br.ufc.great.syspromocity.service.UsersService;
 
 @Controller
 public class PromotionController {
 
     private PromotionsService promotionService;
     private List<Coupon> listCoupons=null;
+    private UsersService userService;
+    private Users user;
     
     @Autowired
     public void setpromotionService(PromotionsService promotionService) {
         this.promotionService = promotionService;
     }
+    
+    @Autowired
+    public void setUserService(UsersService userService) {
+    	this.userService = userService;
+    }
 
+	private void checkUser() {
+		User userDetails = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();      	
+    	this.user = userService.getUserByUserName(userDetails.getUsername());
+	}
+    
     @RequestMapping(value = "/promotions")
-    public String index() {
+    public String index(Model model) {
+    	checkUser();    	    	
+    	model.addAttribute("username", user.getUsername());
+    	model.addAttribute("emailuser", user.getEmail());
+    	model.addAttribute("userid", user.getId());
+
         return "redirect:/promotions/1";
     }
 
     @RequestMapping(value = "/promotions/{pageNumber}", method = RequestMethod.GET)
     public String list(@PathVariable Integer pageNumber, Model model) {
         Page<Promotion> page = promotionService.getList(pageNumber);
-
+        
         int current = page.getNumber() + 1;
         int begin = Math.max(1, current - 5);
         int end = Math.min(begin + 10, page.getTotalPages());
 
+        checkUser(); 
         model.addAttribute("list", page);
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current);
-
+    	model.addAttribute("username", user.getUsername());
+    	model.addAttribute("emailuser", user.getEmail());
+    	model.addAttribute("userid", user.getId());
+        
         return "promotions/list";
 
     }
 
     @RequestMapping("/promotions/add")
     public String add(Model model) {
-
     	List<Coupon> emptyList = new LinkedList<Coupon>();
     	this.listCoupons = emptyList; 
     	
+    	checkUser();    	
+    	model.addAttribute("username", user.getUsername());
+    	model.addAttribute("emailuser", user.getEmail());
+    	model.addAttribute("userid", user.getId());
         model.addAttribute("promotion", new Promotion());
+        
         return "promotions/form";
 
     }
@@ -64,10 +93,14 @@ public class PromotionController {
     public String edit(@PathVariable Long id, Model model) {
     	List<Coupon> listCoupons = promotionService.get(Long.valueOf(id)).getCoupons();
     	
+    	checkUser();    	
     	this.listCoupons = listCoupons;    	
         model.addAttribute("promotion", promotionService.get(id));  
         model.addAttribute("idPromotion", id);
         model.addAttribute("list", listCoupons);
+    	model.addAttribute("username", user.getUsername());
+    	model.addAttribute("emailuser", user.getEmail());
+    	model.addAttribute("userid", user.getId());
 
         return "promotions/formEdit";
 
@@ -92,9 +125,13 @@ public class PromotionController {
     @RequestMapping(value="/promotions/{id}/coupons", method=RequestMethod.GET)
     public String listCoupons(@PathVariable("id") Long id, Model model) {
     	List<Coupon> listCoupons = promotionService.get(Long.valueOf(id)).getCoupons();
-   
+
+    	checkUser();    	
     	model.addAttribute("idPromotion", id);
         model.addAttribute("list", listCoupons);
+    	model.addAttribute("username", user.getUsername());
+    	model.addAttribute("emailuser", user.getEmail());
+    	model.addAttribute("userid", user.getId());
         
     	return "promotions/listCoupons";
     }
@@ -103,8 +140,13 @@ public class PromotionController {
     @RequestMapping("/promotions/{id}/coupons/add")
     public String addCoupon(@PathVariable("id") Integer id, Model model) {
     	
+    	checkUser();    	
     	model.addAttribute("idPromotion", id);
         model.addAttribute("coupon", new Coupon());
+    	model.addAttribute("username", user.getUsername());
+    	model.addAttribute("emailuser", user.getEmail());
+    	model.addAttribute("userid", user.getId());
+
         return "promotions/formCoupons";
 
     }
@@ -131,7 +173,7 @@ public class PromotionController {
     public String editCoupon(@PathVariable Long idPromotion, @PathVariable Long idCoupon, Model model) {
     	List<Coupon> listCoupons = promotionService.get(Long.valueOf(idPromotion)).getCoupons();
     	Coupon coupon = new Coupon();
-    	
+    	 	
     	this.listCoupons = listCoupons;
     	//Procura o cupom, na lista de cupons da promoção, que vai ser editado
     	for (Coupon element : listCoupons) {
@@ -143,11 +185,15 @@ public class PromotionController {
     		}
     	}
     	
+    	checkUser();   
         model.addAttribute("promotion", promotionService.get(idPromotion));  
         model.addAttribute("idPromotion", idPromotion);
         model.addAttribute("list", listCoupons);
         model.addAttribute("coupon", coupon);
         model.addAttribute("idCoupon", idCoupon);
+    	model.addAttribute("username", user.getUsername());
+    	model.addAttribute("emailuser", user.getEmail());
+    	model.addAttribute("userid", user.getId());
 
         return "promotions/formEditCoupon";
 

@@ -1,9 +1,9 @@
 <!-- Logo -->
-<a href="index2.html" class="logo">
+<a href="/" class="logo">
     <!-- mini logo for sidebar mini 50x50 pixels -->
-    <span class="logo-mini"><b>S</b>RT</span>
+    <span class="logo-mini"><b>S</b>PC</span>
     <!-- logo for regular state and mobile devices -->
-    <span class="logo-lg"><b>SysRepoTD</b>Admin</span>
+    <span class="logo-lg"><b>SysPromocity</b>Admin</span>
 </a>
 <!-- Header Navbar: style can be found in header.less -->
 <nav class="navbar navbar-static-top">
@@ -16,23 +16,22 @@
         <ul class="nav navbar-nav">
             <!-- User Account: style can be found in dropdown.less -->
             <li class="dropdown user user-menu">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <img src="dist/img/avatar5.png" class="user-image" alt="User Image" />
-                    <span class="hidden-xs">Armando Teste</span>
+                <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                    <img src="/dist/img/avatar5.png" class="user-image" alt="User Image" />
+                    <span class="hidden-xs" th:text="${username}"></span>
                 </a>
                 <ul class="dropdown-menu">
                     <!-- User image -->
                     <li class="user-header">
-                        <img src="dist/img/avatar5.png" class="img-circle" alt="User Image" />
-
+                        <img src="/dist/img/avatar5.png" class="img-circle" alt="User Image" />
                         <p>
-                            Armando Teste
+                            <span class="hidden-xs" th:text="${emailuser}"></span>
                         </p>
                     </li>
                     <!-- Menu Footer-->
                     <li class="user-footer">
                         <div class="pull-left">
-                            <a href="#" class="btn btn-default btn-flat">Minha Conta</a>
+                            <a th:href="${'/users/edit/'+userid}" class="btn btn-default btn-flat">Minha Conta</a>
                         </div>
                         <div class="pull-right">
                             <a href="/logout" class="btn btn-default btn-flat">Sair</a>

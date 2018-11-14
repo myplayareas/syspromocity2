@@ -24,12 +24,14 @@
             <table class="table table-striped">
                 <tr>
                     <th>User name</th>
+                    <th>E-mail</th>
                     <th>Ativo</th>
                     <th>Ações</th>
                 </tr>
                 <tr th:each="row : ${list}">
                 	<input id="id" name="id" th:value="${row.id}" type="hidden" />
                     <td th:text="${row.username}"></td>
+                    <td th:text="${row.email}"></td>
                     <td th:text="${row.enabled}"></td>
                     <td>
                         <a th:href="${'/users/edit/' + row.id}">editar</a> -

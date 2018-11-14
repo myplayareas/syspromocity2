@@ -4,21 +4,25 @@
     <title>Promoções da Loja ID</title>
 </head>
 <body>
+
 <section layout:fragment="header">
 <h1 th:text="${'Promoções da Loja '+idStore}"></h1>
+
 <ol class="breadcrumb">
     <li><a href="/"><i class="fa fa-dashboard"></i> Dashboard</a></li>
     <li><a href="/stores/1"><i class="active"></i> Lojas</a></li>
     <li class="active">Promoções da Loja</li>
 </ol>
 </section>
+
 <div layout:fragment="content">
     <div class="box">
         <div class="box-header with-border">
             <h3 class="box-title">Listagem</h3>
             <div class="box-tools pull-right">
-                <a th:href="${'/stores/'+idStore+'/promotions/add'}" type="button" class="btn btn-box-tool"><i class="fa fa-plus"></i></a>
-                <br clear="all" />
+                <a th:href="${'/stores/'+idStore+'/promotions/add'}" type="button" class="btn btn-box-tool">
+                <i class="fa fa-plus"></i>
+                </a> <br clear="all" />
             </div>
         </div>
         <div class="box-body no-padding">

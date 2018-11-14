@@ -2,6 +2,8 @@ package br.ufc.great.syspromocity.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,20 +25,34 @@ import br.ufc.great.syspromocity.util.GeradorSenha;
 public class UserController {
 
 	private UsersService userService;
+	private Users user;
 	
 	@Autowired
 	public void setUserService(UsersService userServices){
 		this.userService = userServices;
 	}
+
+	private void checkUser() {
+		User userDetails = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();		
+    	this.user = userService.getUserByUserName(userDetails.getUsername());
+	}
 	
 	@RequestMapping(value = "/users")
-	public String index(){
+	public String index(Model model){
+		checkUser();    	
+    	
+    	model.addAttribute("username", user.getUsername());
+    	model.addAttribute("emailuser", user.getEmail());
+    	model.addAttribute("userid", user.getId());
+		
 		return "redirect:/users/1";
 	}
 	
     @RequestMapping(value = "/users/{pageNumber}", method = RequestMethod.GET)
     public String list(@PathVariable Integer pageNumber, Model model) {
     	Page<Users> page = this.userService.getList(pageNumber);
+
+		checkUser();    	
 
         int current = page.getNumber() + 1;
         int begin = Math.max(1, current - 5);
@@ -46,22 +62,35 @@ public class UserController {
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current);
-
+        model.addAttribute("username", user.getUsername());
+    	model.addAttribute("emailuser", user.getEmail());
+    	model.addAttribute("userid", user.getId());
+        
         return "users/list";
     }
 
     @RequestMapping("/users/add")
     public String add(Model model) {
-
+		checkUser();    	
+    	
         model.addAttribute("user", new Users());
+        model.addAttribute("username", user.getUsername());
+    	model.addAttribute("emailuser", user.getEmail());
+    	model.addAttribute("userid", user.getId());
+    	
         return "users/form";
 
     }
 
     @RequestMapping("/users/edit/{id}")
     public String edit(@PathVariable Long id, Model model) {
-
+		checkUser();    	
+    	
         model.addAttribute("user", userService.get(id));
+        model.addAttribute("username", user.getUsername());
+    	model.addAttribute("emailuser", user.getEmail());
+    	model.addAttribute("userid", user.getId());
+    	
         return "users/formpwd";
 
     }
