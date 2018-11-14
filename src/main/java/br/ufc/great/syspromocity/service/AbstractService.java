@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import br.ufc.great.syspromocity.model.AbstractModel;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Classe abstrata base para a criação dos serviços manipulação dos repositórios de dados da aplicação
@@ -28,6 +29,10 @@ public abstract class AbstractService<T extends AbstractModel<Long>, Long extend
                 new PageRequest(pageNumber - 1, PAGE_SIZE, Sort.Direction.ASC, "id");
 
         return getRepository().findAll(pageRequest);
+    }
+    
+    public List<T> getAll(){
+    	return getRepository().findAll();
     }
 
     public T save(T entity) {

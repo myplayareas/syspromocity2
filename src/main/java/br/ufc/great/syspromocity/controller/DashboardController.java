@@ -1,10 +1,15 @@
 package br.ufc.great.syspromocity.controller;
 
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import br.ufc.great.syspromocity.model.Users;
 import br.ufc.great.syspromocity.service.CouponsService;
 import br.ufc.great.syspromocity.service.PromotionsService;
 import br.ufc.great.syspromocity.service.StoresService;
@@ -22,6 +27,7 @@ public class DashboardController {
 	private CouponsService couponService;
 	private PromotionsService promotionService;
 	private StoresService storeService;	
+	private String userName; 
 
 	@Autowired
 	public void setUserService(UsersService userService) {
@@ -44,7 +50,7 @@ public class DashboardController {
 	}
 	
     @RequestMapping("/")
-    public String index(Model model) {
+    public String index(Model model, Principal principal) {
     	int totalUsers=0;
     	int totalStores=0;
     	int totalPromotions=0;
@@ -54,14 +60,19 @@ public class DashboardController {
     	totalStores = (int) this.storeService.count();
     	totalPromotions = (int) this.promotionService.count();
     	totalCoupons = (int) this.couponService.count();
+    	this.userName = principal.getName();
     	
+    	Users user = userService.getUserByUserName(userName);
+    	    	
     	model.addAttribute("totalUsers", totalUsers);
     	model.addAttribute("totalStores", totalStores);
     	model.addAttribute("totalPromotions", totalPromotions);
     	model.addAttribute("totalCoupons", totalCoupons);
+    	model.addAttribute("username", user.getUsername());
+    	model.addAttribute("emailuser", user.getEmail());
+    	model.addAttribute("userid", user.getId());
     	
         return "dashboard/index";
     }
-
 
 }

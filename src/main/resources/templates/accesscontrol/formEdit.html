@@ -5,7 +5,7 @@
 </head>
 <body>
 <section layout:fragment="header">
-    <h1>Cadastro de Usuários</h1>
+    <h1>Permissão de Usuário</h1>
     <ol class="breadcrumb">
         <li><a href="/"><i class="fa fa-dashboard"></i> Dashboard</a></li>
         <li class="active">Edição de Permissão de Usuário</li>
@@ -14,7 +14,7 @@
 <div layout:fragment="content">
     <div class="box">
         <div class="box-header with-border">
-            <h3 class="box-title">Formulário</h3>
+            <h3 class="box-title">Edição de Permissão</h3>
             <div class="box-tools pull-right">
                 <a href="/accesscontrol" type="button" class="btn btn-box-tool"><i class="fa fa-list-ul"></i></a>
             </div>
@@ -22,14 +22,18 @@
         <form data-toggle="validator" role="form" th:object="${access}" th:action="@{/accesscontrol/save}" method="post">
             <div class="box-body">
                 <input type="hidden" th:field="*{id}"/>
-
                 <div class="form-group">
                     <label for="username">Username</label>
                     <input type="text" required="true" class="form-control" th:field="*{username}" id="username" readonly="readonly"/>
                 </div>
                 <div class="form-group">
-                    <label for="authority">Novo Acesso</label>
-                    <input type="authority" required="true" class="form-control" name="authority" id="authority" />
+                    <label for="authority">Novo Acesso</label>                    
+                    <select class="form-control" th:field="*{authority}" name="authority" id="authority" required="true">
+							<option value="ADMIN">ADMIN</option>
+							<option value="LOJISTA">LOJISTA</option>
+							<option value="USER">USER</option>
+							<option value="GUEST">GUEST</option>
+					</select>
                 </div>
             </div>
             <div class="box-footer">

@@ -3,7 +3,9 @@
 <head>
     <title>Lojas</title>
 </head>
+
 <body>
+
 <section layout:fragment="header">
 <h1>Lojas</h1>
 <ol class="breadcrumb">
@@ -11,55 +13,59 @@
     <li class="active">Lojas</li>
 </ol>
 </section>
-<div layout:fragment="content">
-    <div class="box">
-        <div class="box-header with-border">
-            <h3 class="box-title">Listagem</h3>
-            <div class="box-tools pull-right">
-                <a href="/stores/add" type="button" class="btn btn-box-tool"><i class="fa fa-plus"></i></a>
-                <br clear="all" />
-            </div>
-        </div>
-        <div class="box-body no-padding">
-            <table class="table table-striped">
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Endereço</th>
-                    <th>Cidade</th>
-                    <th>Estado</th>
-                    <th>Latitude</th>
-                    <th>Longitude</th>
-                    <th>Raio</th>
-                    <th>Ações</th>
-                </tr>
-                <tr th:each="row : ${list}">
-                    <td th:text="${row.id}"></td>
-                    <td th:text="${row.name}"></td>
-                    <td th:text="${row.address}"></td>
-                    <td th:text="${row.city}"></td>
-                    <td th:text="${row.state}"></td>
-                    <td th:text="${row.latitude}"></td>
-                    <td th:text="${row.longitude}"></td>
-                    <td th:text="${row.radius}"></td> 
-                    <td>
-                        <a th:href="${'/stores/edit/' + row.id}">editar</a> -
-                        <a th:href="${'/stores/delete/' + row.id}">excluir</a> - 
-                        <a th:href="${'/stores/' + row.id + '/promotions'}">Promoções</a>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div class="box-footer clearfix">
-            <ul class="pagination pagination-sm no-margin pull-right">
-                <li><a href="/stores/1">Primeira</a></li>
-                <li th:each="p : ${#numbers.sequence(1, endIndex/beginIndex)}" th:class="${p == currentIndex} ? 'active' : ''">
-                    <a th:href="${'/stores/' + p}" th:text="${p}"></a>
-                </li>
-                <li><a th:href="${'/stores/' + endIndex}">Última</a></li>
-            </ul>
-        </div>
-    </div>
-</div>
+
+	<div layout:fragment="content">
+		<div class="box">
+			<div class="box-header with-border">
+				<h3 class="box-title">Listagem</h3>
+				<div class="box-tools pull-right">
+					<a href="/stores/add" type="button" class="btn btn-box-tool">
+					<i class="fa fa-plus"></i>
+					</a> <br clear="all" />
+				</div>
+			</div>
+			<div class="box-body no-padding">
+				<table class="table table-striped">
+					<tr>
+						<th>ID</th>
+						<th>Name</th>
+						<th>Endereço</th>
+						<th>Cidade</th>
+						<th>Estado</th>
+						<th>Latitude</th>
+						<th>Longitude</th>
+						<th>Raio</th>
+						<th>Ações</th>
+					</tr>
+					<tr th:each="row : ${list}">
+						<td th:text="${row.id}"></td>
+						<td th:text="${row.name}"></td>
+						<td th:text="${row.address}"></td>
+						<td th:text="${row.city}"></td>
+						<td th:text="${row.state}"></td>
+						<td th:text="${row.latitude}"></td>
+						<td th:text="${row.longitude}"></td>
+						<td th:text="${row.radius}"></td>
+						<td><a th:href="${'/stores/edit/' + row.id}">editar</a> - <a
+							th:href="${'/stores/delete/' + row.id}">excluir</a> - <a
+							th:href="${'/stores/' + row.id + '/promotions'}">Promoções</a></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	
+	<!--  
+	<div class="box-footer clearfix">
+			<ul class="pagination pagination-sm no-margin pull-right">
+				<li><a href="/stores/1">Primeira</a></li>
+				<li th:each="p : ${#numbers.sequence(1, endIndex/beginIndex)}"
+					th:class="${p == currentIndex} ? 'active' : ''"><a
+					th:href="${'/stores/' + p}" th:text="${p}"></a></li>
+				<li><a th:href="${'/stores/' + endIndex}">Última</a></li>
+			</ul>
+	</div>
+	-->
+	
 </body>
 </html>

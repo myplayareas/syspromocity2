@@ -1,20 +1,25 @@
 package br.ufc.great.syspromocity.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.ufc.great.syspromocity.model.Authorities;
 import br.ufc.great.syspromocity.model.Users;
 import br.ufc.great.syspromocity.service.AuthoritiesService;
 import br.ufc.great.syspromocity.util.GeradorSenha;
+import br.ufc.great.syspromocity.service.UsersService;
 
 /**
  * Faz o controle do domínio de Controle de Acesso
@@ -25,17 +30,34 @@ import br.ufc.great.syspromocity.util.GeradorSenha;
 public class AccessControlController {
 	
 	private AuthoritiesService authoritiesService;
+	private UsersService userService;
+	private Users user;
 
 	@Autowired
 	public void setAuthoritiesService(AuthoritiesService authoritiesService) {
 		this.authoritiesService = authoritiesService;
 	}
 	
+    @Autowired
+    public void setUserService(UsersService userService) {
+    	this.userService = userService;
+    }
+	
+	private void checkUser() {
+		User userDetails = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();      	
+    	this.user = userService.getUserByUserName(userDetails.getUsername());
+	}
+	
     @RequestMapping(value="/accesscontrol", method = RequestMethod.GET)
     public String index(Model model) {
     	List<Authorities> authoritiesList = this.authoritiesService.getListAll();
     	
-    	model.addAttribute("list", authoritiesList); 
+    	checkUser();
+    	model.addAttribute("list", authoritiesList);
+    	model.addAttribute("username", user.getUsername());
+    	model.addAttribute("emailuser", user.getEmail());
+    	model.addAttribute("userid", user.getId());
+
         return "accesscontrol/list";
     }
     
@@ -43,6 +65,10 @@ public class AccessControlController {
     public String add(Model model) {
 
         model.addAttribute("access", new Authorities());
+    	model.addAttribute("username", user.getUsername());
+    	model.addAttribute("emailuser", user.getEmail());
+    	model.addAttribute("userid", user.getId());
+
         return "accesscontrol/form";
 
     }
@@ -51,6 +77,10 @@ public class AccessControlController {
     public String edit(@PathVariable Long id, Model model) {
 
         model.addAttribute("access", authoritiesService.get(id));
+    	model.addAttribute("username", user.getUsername());
+    	model.addAttribute("emailuser", user.getEmail());
+    	model.addAttribute("userid", user.getId());
+
         return "accesscontrol/formEdit";
 
     }
