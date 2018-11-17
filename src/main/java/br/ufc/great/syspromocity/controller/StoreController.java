@@ -82,6 +82,7 @@ public class StoreController {
     public String add(Model model) {
     	
     	checkUser();
+    	this.listPromotions = null;
     	model.addAttribute("username", user.getUsername());
     	model.addAttribute("emailuser", user.getEmail());
     	model.addAttribute("userid", user.getId());
@@ -186,6 +187,7 @@ public class StoreController {
     			promotion.setFromDate(element.getFromDate());
     			promotion.setToDate(element.getToDate());
     			promotion.setCoupons(this.listCoupons);
+    			break;
     		}
     	}
     	
@@ -223,7 +225,7 @@ public class StoreController {
         Store save = storeService.save(store);
         
         ra.addFlashAttribute("successFlash", "Os novos dados da promoção foi salva na Loja.");
-        return "redirect:/stores";
+        return "redirect:/stores/"+idStore+"/promotions";
     }
     
     //Remover uma promoção de uma dada loja stores/edit/idStore/promotions/delete/idPromotion
@@ -243,7 +245,7 @@ public class StoreController {
         Store save = storeService.save(store);
         
         ra.addFlashAttribute("successFlash", "A promoção foi removida da lista.");
-        return "redirect:/stores";
+        return "redirect:/stores/"+idStore+"/promotions";
     }
 
 }
