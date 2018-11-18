@@ -158,5 +158,7 @@ public class UserController {
         return "redirect:/users";
 
     }
+    
+    //Implementar o profile do usuário https://nixmash.com/post/profile-image-uploads-the-spring-parts
 
 }

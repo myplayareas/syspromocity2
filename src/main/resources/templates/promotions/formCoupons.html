@@ -34,7 +34,7 @@
                 
                 <div class="form-group">
                     <label for="qrCode">QRCode</label>
-                    <input type="text" required="true" class="form-control" th:field="*{qrCode}" id="qrCode" />
+                    <input type="text" class="form-control" th:value="${couponCode}" id="qrCode" name="qrCode" readonly="readonly"/>
                 </div>
                 
             </div>

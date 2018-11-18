@@ -1,5 +1,6 @@
 package br.ufc.great.syspromocity.controller;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,6 +20,10 @@ import br.ufc.great.syspromocity.model.Promotion;
 import br.ufc.great.syspromocity.model.Users;
 import br.ufc.great.syspromocity.service.PromotionsService;
 import br.ufc.great.syspromocity.service.UsersService;
+import br.ufc.great.syspromocity.util.Constantes;
+import br.ufc.great.syspromocity.util.GeradorQRCode;
+import br.ufc.great.syspromocity.util.GeradorSenha;
+import br.ufc.great.syspromocity.util.ManipuladorDatas;
 
 @Controller
 public class PromotionController {
@@ -139,13 +144,18 @@ public class PromotionController {
     //add Coupon
     @RequestMapping("/promotions/{id}/coupons/add")
     public String addCoupon(@PathVariable("id") Integer id, Model model) {
-    	
-    	checkUser();    	
+    	String dataCorrente = new ManipuladorDatas().getCurrentDataTime("yyyy/MM/dd HH:mm:ss");
+		String valor = String.valueOf(id) + dataCorrente;
+		String couponCode = new GeradorSenha().criptografa(valor);
+		
+    	checkUser();    
+    
     	model.addAttribute("idPromotion", id);
         model.addAttribute("coupon", new Coupon());
     	model.addAttribute("username", user.getUsername());
     	model.addAttribute("emailuser", user.getEmail());
     	model.addAttribute("userid", user.getId());
+    	model.addAttribute("couponCode", couponCode);
 
         return "promotions/formCoupons";
 
@@ -157,8 +167,18 @@ public class PromotionController {
     	
     	Promotion promotion = promotionService.get(Long.valueOf(id));
     	promotion.getCoupons().add(coupon);
-    	
+    	    	
         Promotion save = promotionService.save(promotion);
+        
+    	String promotionCode = coupon.getQrCode();
+    	
+    	//TODO melhorar o código para permitir identificar o cupom quando a promoção tiver mais de um cupom.
+    	int indexCoupon = save.getCoupons().size()-1;
+    	Coupon couponAux = save.getCoupons().get(indexCoupon);
+    	
+    	String idCoupon = String.valueOf(couponAux.getId());
+    	new GeradorQRCode().gerar(promotionCode, new Constantes().filePathQRCode, idCoupon+".png");
+
         ra.addFlashAttribute("successFlash", "Promoção foi salva com novo cupom.");
         return "redirect:/promotions";
     }
