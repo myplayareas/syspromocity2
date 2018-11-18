@@ -28,7 +28,7 @@ public class GeradorQRCode {
     	int size = 250;
 
     	String fileType = "png";
-    	File myFile = new File(filePath+name);
+    	File myFile = new File(filePath+"/"+name);
     	
     	try {
     	Map<EncodeHintType, Object> hintMap = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);

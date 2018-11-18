@@ -168,11 +168,9 @@ public class PromotionController {
     	Promotion promotion = promotionService.get(Long.valueOf(id));
     	promotion.getCoupons().add(coupon);
     	    	
-        Promotion save = promotionService.save(promotion);
-        
+        Promotion save = promotionService.save(promotion);        
     	String promotionCode = coupon.getQrCode();
     	
-    	//TODO melhorar o código para permitir identificar o cupom quando a promoção tiver mais de um cupom.
     	int indexCoupon = save.getCoupons().size()-1;
     	Coupon couponAux = save.getCoupons().get(indexCoupon);
     	
@@ -202,6 +200,7 @@ public class PromotionController {
     			coupon.setDescription(element.getDescription());
     			coupon.setDiscount(element.getDiscount());
     			coupon.setQrCode(element.getQrCode());
+    			break;
     		}
     	}
     	
