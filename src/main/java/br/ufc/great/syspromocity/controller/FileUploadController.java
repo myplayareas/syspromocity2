@@ -2,6 +2,7 @@ package br.ufc.great.syspromocity.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -47,7 +48,7 @@ public class FileUploadController {
   public byte[] getImage(@PathVariable(value = "imageName") String imageName) throws IOException {
 	  String uploadFilePath = new Constantes().uploadDirectory;
 	  
-	  File serverFile = new File(uploadFilePath + "/" + imageName + ".png");
+	  File serverFile = new File(uploadFilePath + FileSystems.getDefault().getSeparator() + imageName + ".png");
       return Files.readAllBytes(serverFile.toPath());
   }
 
@@ -56,7 +57,7 @@ public class FileUploadController {
   public byte[] getQRCodeImage(@PathVariable(value = "imageName") String imageName) throws IOException {
 	  String couponsPath = new Constantes().filePathQRCode;
 	  
-	  File serverFile = new File(couponsPath + "/" + imageName + ".png");
+	  File serverFile = new File(couponsPath + FileSystems.getDefault().getSeparator() + imageName + ".png");
       return Files.readAllBytes(serverFile.toPath());
   }
 
