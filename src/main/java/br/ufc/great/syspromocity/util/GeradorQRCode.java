@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileSystems;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -28,7 +29,7 @@ public class GeradorQRCode {
     	int size = 250;
 
     	String fileType = "png";
-    	File myFile = new File(filePath+"/"+name);
+    	File myFile = new File(filePath+ FileSystems.getDefault().getSeparator() + name);
     	
     	try {
     	Map<EncodeHintType, Object> hintMap = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);
