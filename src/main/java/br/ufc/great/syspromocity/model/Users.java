@@ -7,6 +7,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 import org.hibernate.annotations.Type;
@@ -32,7 +34,10 @@ public class Users extends AbstractModel<Long>{
 	private double latitude;
 	private double longitude;
 
-	@ManyToMany(mappedBy="users", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name="users_coupon",
+    joinColumns={@JoinColumn(name="users_id")},
+    inverseJoinColumns={@JoinColumn(name="coupon_id")})
 	private List<Coupon> couponList = new LinkedList<Coupon>();
 	
 	public Users() {

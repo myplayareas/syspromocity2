@@ -19,9 +19,6 @@ public class Coupon extends AbstractModel<Long>{
 	private String qrCode;
 	
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(name="users_coupon",
-    joinColumns={@JoinColumn(name="users_id")},
-    inverseJoinColumns={@JoinColumn(name="coupon_id")})
 	List<Users> users;
 	
 	public Coupon() {
