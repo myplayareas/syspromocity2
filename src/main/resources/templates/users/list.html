@@ -35,7 +35,8 @@
                     <td th:text="${row.enabled}"></td>
                     <td>
                         <a th:href="${'/users/edit/' + row.id}">editar</a> -
-                        <a th:href="${'/users/delete/' + row.id}">excluir</a>
+                        <a th:href="${'/users/delete/' + row.id}">excluir</a> - 
+                        <a th:href="${'/users/'+ row.id + '/coupons'}">Cupons</a>
                     </td>
                 </tr>
             </table>

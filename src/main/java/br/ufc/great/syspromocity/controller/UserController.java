@@ -1,5 +1,7 @@
 package br.ufc.great.syspromocity.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.ufc.great.syspromocity.model.Coupon;
 import br.ufc.great.syspromocity.model.Users;
 import br.ufc.great.syspromocity.service.UsersService;
 import br.ufc.great.syspromocity.util.GeradorSenha;
@@ -149,7 +152,6 @@ public class UserController {
             return "redirect:/users";
     	}
     }
-
     
     @RequestMapping("/users/delete/{id}")
     public String delete(@PathVariable Long id) {
@@ -157,6 +159,22 @@ public class UserController {
         userService.delete(id);
         return "redirect:/users";
 
+    }
+    
+    @RequestMapping(value = "/users/{idUser}/coupons", method = RequestMethod.GET)
+    public String listCoupons(@PathVariable long idUser, Model model) {
+
+    	List<Coupon> coupons =  this.userService.get(idUser).getCouponList();
+
+		checkUser();    	
+
+        model.addAttribute("list", coupons);
+        model.addAttribute("idUser", idUser);
+        model.addAttribute("username", user.getUsername());
+    	model.addAttribute("emailuser", user.getEmail());
+    	model.addAttribute("userid", user.getId());
+        
+        return "users/listCoupons";
     }
     
     //Implementar o profile do usuário https://nixmash.com/post/profile-image-uploads-the-spring-parts
