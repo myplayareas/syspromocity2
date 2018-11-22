@@ -1,10 +1,14 @@
 package br.ufc.great.syspromocity.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Coupon extends AbstractModel<Long>{
@@ -13,6 +17,12 @@ public class Coupon extends AbstractModel<Long>{
 	private String description;
 	private float discount;
 	private String qrCode;
+	
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name="users_coupon",
+    joinColumns={@JoinColumn(name="users_id")},
+    inverseJoinColumns={@JoinColumn(name="coupon_id")})
+	List<Users> users;
 	
 	public Coupon() {
 	}
@@ -45,5 +55,13 @@ public class Coupon extends AbstractModel<Long>{
 
 	public void setDiscount(float discount) {
 		this.discount = discount;
+	}
+
+	public List<Users> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<Users> users) {
+		this.users = users;
 	}
 }

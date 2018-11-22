@@ -7,11 +7,9 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 
 import org.hibernate.annotations.Type;
-
-import br.ufc.great.syspromocity.model.AbstractModel;
 
 /**
  * Classe modelo de Usuário
@@ -34,7 +32,7 @@ public class Users extends AbstractModel<Long>{
 	private double latitude;
 	private double longitude;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(mappedBy="users", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Coupon> couponList = new LinkedList<Coupon>();
 	
 	public Users() {
