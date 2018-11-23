@@ -50,12 +50,15 @@ public class PromotionController {
     
     @RequestMapping(value = "/promotions")
     public String index(Model model) {
-    	checkUser();    	    	
+    	checkUser();    	  
+    	List<Promotion> list = this.promotionService.getAll();
+    	
     	model.addAttribute("username", user.getUsername());
     	model.addAttribute("emailuser", user.getEmail());
     	model.addAttribute("userid", user.getId());
+    	model.addAttribute("list", list);
 
-        return "redirect:/promotions/1";
+        return "promotions/list";
     }
 
     @RequestMapping(value = "/promotions/{pageNumber}", method = RequestMethod.GET)

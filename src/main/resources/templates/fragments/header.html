@@ -28,7 +28,22 @@
                             <span class="hidden-xs" th:text="${emailuser}"></span>
                         </p>
                     </li>
-                    <!-- Menu Footer-->
+
+					<li class="user-body">
+						<div class="row">
+							<div class="col-xs-4 text-center">
+								<a th:href="${'/users/'+ userid + '/coupons'}">Cupons</a>
+							</div>
+							<div class="col-xs-4 text-center">
+								<a th:href="${'/users/list'}">Usuários</a>
+							</div>
+							<div class="col-xs-4 text-center">
+								<a th:href="${'/users/'+ userid + '/list/friends'}">Amigos</a>
+							</div>
+						</div> <!-- /.row -->
+					</li>
+
+					<!-- Menu Footer-->
                     <li class="user-footer">
                         <div class="pull-left">
                             <a th:href="${'/users/edit/'+userid}" class="btn btn-default btn-flat">Minha Conta</a>

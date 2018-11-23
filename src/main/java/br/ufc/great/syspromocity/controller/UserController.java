@@ -1,5 +1,6 @@
 package br.ufc.great.syspromocity.controller;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -176,7 +177,108 @@ public class UserController {
         
         return "users/listCoupons";
     }
+
+    /**
+     * Lista todos os usuários disponíveis
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/users/list", method = RequestMethod.GET)
+    public String listAllUsers(Model model) {
+    	checkUser();
+    	
+    	List<Users> users =  this.userService.getAll();
+    	
+        model.addAttribute("list", users);
+        model.addAttribute("username", user.getUsername());
+    	model.addAttribute("emailuser", user.getEmail());
+    	model.addAttribute("userid", user.getId());
+        
+        return "users/listAllUsers";
+    }
     
+    /**
+     * Dado um usuário ele adicionar um amigo
+     * @param idUser usuário logado
+     * @param idFriend id do amigo
+     * @param model
+     * @param ra
+     * @return
+     */
+    @RequestMapping(value = "/users/{idUser}/add/friend/{idFriend}")
+    public String addFriend(@PathVariable long idUser, @PathVariable long idFriend, Model model, final RedirectAttributes ra) {
+    	String mensagem="";
+    	checkUser();    
+    	
+    	Users user = this.userService.get(idUser);
+    	Users friend = this.userService.get(idFriend);
+    	
+    	if (user.addIdFriend(friend)) {
+    		this.userService.save(user);
+    		mensagem = "O amigo foi salvo com sucesso.";
+    	}else {
+    		mensagem = "O amigo já existe!!!!.";
+    	}
+
+    	ra.addFlashAttribute("successFlash", mensagem);
+    	return "redirect:/users/list";	
+    }
+
+    /**
+     * Dado um usuário logado lista os amigos dele
+     * @param idUser
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/users/{idUser}/list/friends", method = RequestMethod.GET)
+    public String listFriends(@PathVariable long idUser, Model model) {    
+		checkUser();    	
+
+		Users user = this.userService.get(idUser);
+		List<Users> idFriends = user.getIdFriendsList();
+		
+		List<Users> listaAmigos = new LinkedList<Users>();
+		
+		for (Users id : idFriends) {
+			listaAmigos.add(this.userService.get(id.getId()));
+		}
+
+        model.addAttribute("list", listaAmigos);
+        model.addAttribute("username", user.getUsername());
+    	model.addAttribute("emailuser", user.getEmail());
+    	model.addAttribute("userid", user.getId());
+        
+        return "users/listFriends";
+    }
+
+    /**
+     * Dado um usuário logado, ele remove o amigo selcionado
+     * @param idUser
+     * @param idFriend
+     * @param model
+     * @param ra
+     * @return
+     */
+    @RequestMapping(value = "/users/{idUser}/delete/friend/{idFriend}")
+    public String deleteFriend(@PathVariable long idUser, @PathVariable long idFriend, Model model, final RedirectAttributes ra) {
+    	String mensagem = "";
+    	checkUser();    
+    	
+    	Users user = this.userService.get(idUser);
+    	Users friend = this.userService.get(idFriend);
+    	
+    	if (user.deleteFriend(friend)) {        	 
+        	this.userService.save(user);
+        	mensagem = "Amigo removido com sucesso!";
+    	}else {
+    		mensagem = "O amigo não foi removido."; 
+    	}
+    	
+    	ra.addFlashAttribute("successFlash", mensagem);
+    	String local = "/users/"+idUser+"/list/friends";
+    	return "redirect:"+local;
+    }
+
     //Implementar o profile do usuário https://nixmash.com/post/profile-image-uploads-the-spring-parts
 
 }

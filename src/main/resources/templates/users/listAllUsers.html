@@ -1,47 +1,44 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sd="http://www.thymeleaf.org/spring-data" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout">
 <head>
-    <title>Promoções</title>
+    <title>Usuários</title>
 </head>
 <body>
 <section layout:fragment="header">
-<h1>Promoções</h1>
+<h1>Usuários dispoíveis</h1>
 <ol class="breadcrumb">
     <li><a href="/"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="/stores/1"><i class="active"></i> Lojas</a></li>
-    <li class="active">Promoções</li>
+    <li class="active">Usuarios disponíveis</li>
 </ol>
 </section>
 <div layout:fragment="content">
     <div class="box">
         <div class="box-header with-border">
             <h3 class="box-title">Listagem</h3>
-            <div class="box-tools pull-right">
-                <br clear="all" />
-            </div>
         </div>
+        
         <div class="box-body no-padding">
             <table class="table table-striped">
                 <tr>
-                    <th>ID</th>
-                    <th>Description</th>
-                    <th>From</th>
-                    <th>To</th>
+                    <th>User name</th>
+                    <th>E-mail</th>
+                    <th>Ativo</th>
                     <th>Ações</th>
                 </tr>
-                <tr th:each="row : ${list}">
-                    <td th:text="${row.id}"></td>
-                    <td th:text="${row.description}"></td>
-                    <td th:text="${row.fromDate}"></td>
-                    <td th:text="${row.toDate}"></td> 
+                <tr th:each="row : ${list}">              
+                	<input id="id" name="id" th:value="${row.id}" type="hidden" />
+                    <td th:text="${row.username}"></td>
+                    <td th:text="${row.email}"></td>
+                    <td th:text="${row.enabled}"></td>                    
                     <td>
-                        <a th:href="${'/promotions/edit/' + row.id}">editar</a> -                      
-                        <a th:href="${'/promotions/' + row.id + '/coupons'}">cupons</a>
-                    </td>
+                    <span th:if="${row.id != userid}">
+                        <a th:href="${'/users/'+userid+'/add/friend/' + row.id}">Adicionar como Amigo</a>
+                    </span>
+                    </td>               
                 </tr>
             </table>
         </div>
- 
+
     </div>
 </div>
 </body>
