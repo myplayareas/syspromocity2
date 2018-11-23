@@ -30,22 +30,22 @@ function abrirInfoBox(id, marker) {
 
 function carregarPontos() {
 	
-	$.getJSON('dist/js/ufpimaps.json', function(pontos) {
+	$.getJSON('dist/js/mapsStores.json', function(pontos) {
 		
 		var latlngbounds = new google.maps.LatLngBounds();
 		
 		$.each(pontos, function(index, ponto) {
-			var pontoDegree = {lat: ponto.localization.latitude, lng: ponto.localization.longitude};
+			var pontoDegree = {lat: ponto.latitude, lng: ponto.longitude};
 			var marker = new google.maps.Marker({
 				position: new google.maps.LatLng(pontoDegree),
-				title: ponto.nome,
-				label: ponto.nome, 
+				title: ponto.name,
+				label: ponto.name, 
 				icon: 'dist/img/marcador.png'
 			});
 			
 			var myOptions = {
-				content: "<p>" + ponto.descricao + "</p>",
-				pixelOffset: new google.maps.Size(-150, 0)
+				content: "<p>" + ponto.id + "</p>",
+				pixelOffset: new google.maps.Size(-50, 0)
         	};
 
 			infoBox[ponto.id] = new InfoBox(myOptions);

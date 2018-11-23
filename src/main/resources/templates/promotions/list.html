@@ -41,15 +41,7 @@
                 </tr>
             </table>
         </div>
-        <div class="box-footer clearfix">
-            <ul class="pagination pagination-sm no-margin pull-right">
-                <li><a href="/promotions/1">Primeira</a></li>
-                <li th:each="p : ${#numbers.sequence(1, endIndex/beginIndex)}" th:class="${p == currentIndex} ? 'active' : ''">
-                    <a th:href="${'/promotions/' + p}" th:text="${p}"></a>
-                </li>
-                <li><a th:href="${'/promotions/' + endIndex}">Última</a></li>
-            </ul>
-        </div>
+ 
     </div>
 </div>
 </body>
