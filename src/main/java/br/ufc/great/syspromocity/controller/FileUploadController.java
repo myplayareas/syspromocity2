@@ -58,7 +58,14 @@ public class FileUploadController {
 	  String couponsPath = new Constantes().filePathQRCode;
 	  
 	  File serverFile = new File(couponsPath + FileSystems.getDefault().getSeparator() + imageName + ".png");
-      return Files.readAllBytes(serverFile.toPath());
+	  File cupomPadrao = new File(couponsPath + FileSystems.getDefault().getSeparator() + "cupom.png");
+	  
+	  if (serverFile.length() > 0) {
+		  return Files.readAllBytes(serverFile.toPath());	  
+	  }else {		  
+		return Files.readAllBytes(cupomPadrao.toPath());
+	  }
+      
   }
 
   

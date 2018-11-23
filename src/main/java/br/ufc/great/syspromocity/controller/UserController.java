@@ -1,5 +1,9 @@
 package br.ufc.great.syspromocity.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,11 +17,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.ufc.great.syspromocity.model.Coupon;
 import br.ufc.great.syspromocity.model.Users;
 import br.ufc.great.syspromocity.service.UsersService;
+import br.ufc.great.syspromocity.util.Constantes;
 import br.ufc.great.syspromocity.util.GeradorSenha;
 
 /**
@@ -44,12 +50,14 @@ public class UserController {
 	@RequestMapping(value = "/users")
 	public String index(Model model){
 		checkUser();    	
+    	List<Users> list = userService.getAll();
     	
     	model.addAttribute("username", user.getUsername());
     	model.addAttribute("emailuser", user.getEmail());
     	model.addAttribute("userid", user.getId());
+      	model.addAttribute("list", list);
 		
-		return "redirect:/users/1";
+		return "users/list";
 	}
 	
     @RequestMapping(value = "/users/{pageNumber}", method = RequestMethod.GET)
@@ -90,15 +98,34 @@ public class UserController {
     public String edit(@PathVariable Long id, Model model) {
 		checkUser();    	
     	
-        model.addAttribute("user", userService.get(id));
-        model.addAttribute("username", user.getUsername());
-    	model.addAttribute("emailuser", user.getEmail());
-    	model.addAttribute("userid", user.getId());
+		Users editUser = userService.get(id);
+		
+        model.addAttribute("user", editUser);
+        model.addAttribute("username", editUser.getUsername());
+    	model.addAttribute("emailuser", editUser.getEmail());
+    	model.addAttribute("userid", editUser.getId());
+    	model.addAttribute("amountofcoupons", editUser.getAmountOfCoupons());
+    	model.addAttribute("amountoffriends", editUser.getAmountOfFriends());
     	
         return "users/formpwd";
 
     }
 
+    @RequestMapping("/users/edit/profile/{id}")
+    public String editProfile(@PathVariable Long id, Model model) {
+		checkUser();    	
+    	
+        model.addAttribute("user", user);
+        model.addAttribute("username", user.getUsername());
+    	model.addAttribute("emailuser", user.getEmail());
+    	model.addAttribute("userid", user.getId());
+    	model.addAttribute("amountofcoupons", user.getAmountOfCoupons());
+    	model.addAttribute("amountoffriends", user.getAmountOfFriends());
+    	
+        return "users/formpwdProfile";
+
+    }
+    
     @RequestMapping(value = "/users/save", method = RequestMethod.POST)
     public String save(Users user, @RequestParam("password") String password, 
     		@RequestParam("confirmpassword") String confirmPassword, final RedirectAttributes ra) {
@@ -111,7 +138,7 @@ public class UserController {
             ra.addFlashAttribute("successFlash", "Usuário foi salvo com sucesso.");
             return "redirect:/users";	
     	}else{
-            ra.addFlashAttribute("successFlash", "Usuário foi salvo com sucesso.");
+            ra.addFlashAttribute("successFlash", "A senha do usuário NÃO confere.");
             return "redirect:/users";	    		
     	}    	
 
@@ -278,7 +305,22 @@ public class UserController {
     	String local = "/users/"+idUser+"/list/friends";
     	return "redirect:"+local;
     }
+    
+    @RequestMapping(value = "/users/{idUser}/amount/friends")
+    @ResponseBody
+    public int getAmountOfFriends(@PathVariable(value = "idUser") Long idUser) throws IOException {
+    	Users user = this.userService.get(idUser);
+    	
+        return user.getAmountOfFriends();
+    }
 
+    @RequestMapping(value = "/users/{idUser}/amount/coupons")
+    @ResponseBody
+    public int getAmountOfCoupons(@PathVariable(value = "idUser") Long idUser) throws IOException {
+    	Users user = this.userService.get(idUser);
+    	
+        return user.getAmountOfCoupons();
+    }
     //Implementar o profile do usuário https://nixmash.com/post/profile-image-uploads-the-spring-parts
 
 }

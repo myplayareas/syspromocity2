@@ -174,4 +174,12 @@ public class Users extends AbstractModel<Long>{
 		return achou;
 	}
 	
+	public int getAmountOfCoupons() {
+		return this.getCouponList().size();
+	}
+
+	public int getAmountOfFriends() {
+		return this.getIdFriendsList().size();
+	}
+	
 }
