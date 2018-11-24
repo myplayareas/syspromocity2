@@ -25,10 +25,10 @@
         </div>
         <div class="box-body no-padding">
             <table class="table table-striped">
-                <tr>
-                    <th>Acessos dos usuários</th>
+                <tr>                    
                     <th>Usuário</th>
                     <th>Acesso</th>
+                    <th>Ações</th>
                 </tr>
                 <tr th:each="row : ${list}">
                 	<input id="id" name="id" th:value="${row.id}" type="hidden" />

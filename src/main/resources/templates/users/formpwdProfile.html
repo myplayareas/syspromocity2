@@ -1,14 +1,14 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout">
 <head>
-    <title>Cadastro de Usuário</title>
+    <title>Edita profile do usuário</title>
 </head>
 <body>
 <section layout:fragment="header">
-    <h1>Cadastro de Usuários</h1>
+    <h1>Edita profile do usuário</h1>
     <ol class="breadcrumb">
         <li><a href="/"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li class="active">Cadastro de Usuários</li>
+        <li class="active">Edita profile do usuário</li>
     </ol>
 </section>
 <div layout:fragment="content">
@@ -20,7 +20,7 @@
             <div class="box-body box-profile">
               <img class="profile-user-img img-responsive img-circle" src="/dist/img/avatar5.png" alt="User profile picture"></img>
 			
-              <h3 class="profile-username text-center"><spam th:text="${username}"></spam></h3>
+              <h3 class="profile-username text-center"><spam th:text="${user.username}"></spam></h3>
 
               <p class="text-muted text-center">Software Engineer</p>
 

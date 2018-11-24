@@ -29,7 +29,7 @@ public class StoreController {
     private List<Promotion> listPromotions=null;
 	private List<Coupon> listCoupons;
 	private UsersService userService;
-	private Users user; 
+	private Users loginUser; 
     
     @Autowired
     public void setStoreService(StoresService storeService) {
@@ -43,69 +43,99 @@ public class StoreController {
 
 	private void checkUser() {
 		User userDetails = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();  
-    	this.user = userService.getUserByUserName(userDetails.getUsername());
+    	this.loginUser = userService.getUserByUserName(userDetails.getUsername());
 	}
     
+	/**
+	 * Lista todas as lojas cadastradas
+	 * @param model
+	 * @return
+	 */
     @RequestMapping(value = "/stores")
     public String index(Model model) {
+    	checkUser();
     	List<Store> list = storeService.getAll();    	
-    	checkUser();    	
-    	model.addAttribute("username", user.getUsername());
-    	model.addAttribute("emailuser", user.getEmail());
-    	model.addAttribute("userid", user.getId());
+    	    	
+    	model.addAttribute("loginusername", loginUser.getUsername());
+    	model.addAttribute("loginemailuser", loginUser.getEmail());
+    	model.addAttribute("loginuserid", loginUser.getId());
     	model.addAttribute("list", list);
     	
         return "stores/list";
     }
 
+    /**
+     * Lista todas as lojas de forma paginada
+     * @param pageNumber
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/stores/{pageNumber}", method = RequestMethod.GET)
     public String list(@PathVariable Integer pageNumber, Model model) {
-        Page<Store> page = storeService.getList(pageNumber);
+    	checkUser();
+    	Page<Store> page = storeService.getList(pageNumber);
         int current = page.getNumber() + 1;
         int begin = Math.max(1, current - 5);
         int end = Math.min(begin + 10, page.getTotalPages());
-
-        checkUser();
+        
         model.addAttribute("list", page);
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current);
-    	model.addAttribute("username", user.getUsername());
-    	model.addAttribute("emailuser", user.getEmail());
-    	model.addAttribute("userid", user.getId());
+        
+    	model.addAttribute("loginusername", loginUser.getUsername());
+    	model.addAttribute("loginemailuser", loginUser.getEmail());
+    	model.addAttribute("loginuserid", loginUser.getId());
     	
         return "stores/list";
-
     }
     
+    /**
+     * Cadastra uma nova loja
+     * @param model
+     * @return
+     */
     @RequestMapping("/stores/add")
     public String add(Model model) {
-    	
     	checkUser();
     	this.listPromotions = null;
-    	model.addAttribute("username", user.getUsername());
-    	model.addAttribute("emailuser", user.getEmail());
-    	model.addAttribute("userid", user.getId());
+    	
+    	model.addAttribute("loginusername", loginUser.getUsername());
+    	model.addAttribute("loginemailuser", loginUser.getEmail());
+    	model.addAttribute("loginuserid", loginUser.getId());
         model.addAttribute("store", new Store());
         
         return "stores/form";
 
     }
 
+    /**
+     * Edita uma loja selecionada
+     * @param id
+     * @param model
+     * @return
+     */
     @RequestMapping("/stores/edit/{id}")
     public String edit(@PathVariable Long id, Model model) {
-    	
     	checkUser();
     	this.listPromotions = storeService.get(id).getPromotionList();
-    	model.addAttribute("username", user.getUsername());
-    	model.addAttribute("emailuser", user.getEmail());
-    	model.addAttribute("userid", user.getId());
+    	
+    	model.addAttribute("loginusername", loginUser.getUsername());
+    	model.addAttribute("loginemailuser", loginUser.getEmail());
+    	model.addAttribute("loginuserid", loginUser.getId());
+    	
         model.addAttribute("store", storeService.get(id));
         
         return "stores/form";
 
     }
 
+    /**
+     * Salva uma nova loja
+     * @param store
+     * @param ra
+     * @return
+     */
     @RequestMapping(value = "/stores/save", method = RequestMethod.POST)
     public String save(Store store, final RedirectAttributes ra) {
     	
@@ -117,7 +147,13 @@ public class StoreController {
 
     }
     
-    //save new Promotion
+    /**
+     * Salva uma nova promoção na loja selecionada
+     * @param id
+     * @param promotion
+     * @param ra
+     * @return
+     */
     @RequestMapping(value = "/stores/{id}/promotions/save", method = RequestMethod.POST)
     public String savePromotion(@PathVariable("id") Integer id,Promotion promotion, final RedirectAttributes ra) {    	
     	Store store = storeService.get(Long.valueOf(id));
@@ -129,51 +165,76 @@ public class StoreController {
         return "redirect:/stores";
     }
 
+    /**
+     * Remove uma loja selecionada
+     * @param id
+     * @return
+     */
     @RequestMapping("/stores/delete/{id}")
     public String delete(@PathVariable Long id) {
         storeService.delete(id);
         return "redirect:/stores";
     }
     
+    /**
+     * Lista as promoções de uma loja selecionada
+     * @param id
+     * @param model
+     * @return
+     */
     @RequestMapping(value="/stores/{id}/promotions")
     public String listPromotions(@PathVariable("id") Long id, Model model) {
-    	List<Promotion> listPromotionsAux = storeService.get(Long.valueOf(id)).getPromotionList();
-    	
     	checkUser();
-    	this.listPromotions = listPromotionsAux;    	
-    	model.addAttribute("username", user.getUsername());
-    	model.addAttribute("emailuser", user.getEmail());
-    	model.addAttribute("userid", user.getId());
+    	List<Promotion> listPromotionsAux = storeService.get(Long.valueOf(id)).getPromotionList();    	    	
+    	this.listPromotions = listPromotionsAux; 
+    	
+    	model.addAttribute("loginusername", loginUser.getUsername());
+    	model.addAttribute("loginemailuser", loginUser.getEmail());
+    	model.addAttribute("loginuserid", loginUser.getId());
+    	
     	model.addAttribute("idStore", id);
         model.addAttribute("list", listPromotionsAux);
         
     	return "stores/listPromotions";
     }
 
-    //add Promotion in Store
+    /**
+     * Cadastra uma nova promoção em uma loja selecionada
+     * @param id
+     * @param model
+     * @return
+     */
     @RequestMapping("/stores/{id}/promotions/add")
     public String addPromotion(@PathVariable("id") Integer id, Model model) {    	
-    	List<Coupon> emptyList = new LinkedList<Coupon>();
-    	
     	checkUser();
-    	this.listCoupons = emptyList;     	
-    	model.addAttribute("username", user.getUsername());
-    	model.addAttribute("emailuser", user.getEmail());
-    	model.addAttribute("userid", user.getId());
+    	List<Coupon> emptyList = new LinkedList<Coupon>();
+       	this.listCoupons = emptyList; 
+    	
+    	model.addAttribute("loginusername", loginUser.getUsername());
+    	model.addAttribute("loginemailuser", loginUser.getEmail());
+    	model.addAttribute("loginuserid", loginUser.getId());
+    	
     	model.addAttribute("idStore", id);
         model.addAttribute("promotion", new Promotion());
+        
         return "stores/formPromotions";
-
     }
        
-    //Editar uma promoção de uma loja stores/edit/idStore/promotions/edit/idPromotion
-    /*
+    /**
+     * Editar uma promoção de uma loja stores/edit/idStore/promotions/edit/idPromotion
+     * 
      * Dada uma loja, 
      * recuperar a lista de promoções
      * Dada a lista de promoções, localizar uma promoção
+     * 
+     * @param idStore
+     * @param idPromotion
+     * @param model
+     * @return
      */
     @RequestMapping("/stores/edit/{idStore}/promotions/edit/{idPromotion}")
     public String editPromotion(@PathVariable Long idStore, @PathVariable Long idPromotion, Model model) {    	
+    	checkUser();
     	List<Promotion> listPromotionsAux = storeService.get(idStore).getPromotionList();
     	Promotion promotion = new Promotion();
     	
@@ -191,10 +252,10 @@ public class StoreController {
     		}
     	}
     	
-    	checkUser();
-    	model.addAttribute("username", user.getUsername());
-    	model.addAttribute("emailuser", user.getEmail());
-    	model.addAttribute("userid", user.getId());
+    	model.addAttribute("loginusername", loginUser.getUsername());
+    	model.addAttribute("loginemailuser", loginUser.getEmail());
+    	model.addAttribute("loginuserid", loginUser.getId());
+    	
         model.addAttribute("store", storeService.get(idStore));  
         model.addAttribute("idStore", idStore);
         model.addAttribute("list", listPromotionsAux);
@@ -202,10 +263,16 @@ public class StoreController {
         model.addAttribute("idPromotion", idPromotion);
 
         return "stores/formEditPromotion";
-
     }
 
-    //save Promotion in Store
+    /**
+     * Salva uma promoção em uma loja
+     * @param idStore
+     * @param idPromotion
+     * @param promotion
+     * @param ra
+     * @return
+     */
     @RequestMapping(value = "/stores/{idStore}/promotions/save/{idPromotion}", method = RequestMethod.POST)
     public String savePromotion(@PathVariable("idStore") Integer idStore,@PathVariable("idPromotion") Integer idPromotion,Promotion promotion, final RedirectAttributes ra) {
     	Store store = storeService.get(Long.valueOf(idStore));
@@ -228,7 +295,14 @@ public class StoreController {
         return "redirect:/stores/"+idStore+"/promotions";
     }
     
-    //Remover uma promoção de uma dada loja stores/edit/idStore/promotions/delete/idPromotion
+    /**
+     * Remover uma promoção de uma dada loja stores/edit/idStore/promotions/delete/idPromotion
+     * 
+     * @param idStore
+     * @param idPromotion
+     * @param ra
+     * @return
+     */
     @RequestMapping(value = "/stores/edit/{idStore}/promotions/delete/{idPromotion}")
     public String deletePromotion(@PathVariable("idStore") Integer idStore, @PathVariable("idPromotion") Integer idPromotion, final RedirectAttributes ra) {
     	Store store = storeService.get(Long.valueOf(idStore));
