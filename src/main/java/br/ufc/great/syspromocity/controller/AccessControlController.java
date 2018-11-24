@@ -31,7 +31,7 @@ public class AccessControlController {
 	
 	private AuthoritiesService authoritiesService;
 	private UsersService userService;
-	private Users user;
+	private Users loginUser;
 
 	@Autowired
 	public void setAuthoritiesService(AuthoritiesService authoritiesService) {
@@ -45,46 +45,71 @@ public class AccessControlController {
 	
 	private void checkUser() {
 		User userDetails = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();      	
-    	this.user = userService.getUserByUserName(userDetails.getUsername());
+    	this.loginUser = userService.getUserByUserName(userDetails.getUsername());
 	}
 	
+	/**
+	 * Lista os usuários e suas permissões
+	 * @param model
+	 * @return
+	 */
     @RequestMapping(value="/accesscontrol", method = RequestMethod.GET)
     public String index(Model model) {
     	List<Authorities> authoritiesList = this.authoritiesService.getListAll();
     	
     	checkUser();
     	model.addAttribute("list", authoritiesList);
-    	model.addAttribute("username", user.getUsername());
-    	model.addAttribute("emailuser", user.getEmail());
-    	model.addAttribute("userid", user.getId());
+    	model.addAttribute("loginusername", loginUser.getUsername());
+    	model.addAttribute("loginemailuser", loginUser.getEmail());
+    	model.addAttribute("loginuserid", loginUser.getId());
 
         return "accesscontrol/list";
     }
     
+    /**
+     * Adiciona uma nova permissão a um usário existente
+     * @param model
+     * @return
+     */
     @RequestMapping("/accesscontrol/add")
     public String add(Model model) {
 
         model.addAttribute("access", new Authorities());
-    	model.addAttribute("username", user.getUsername());
-    	model.addAttribute("emailuser", user.getEmail());
-    	model.addAttribute("userid", user.getId());
+        
+    	model.addAttribute("loginusername", loginUser.getUsername());
+    	model.addAttribute("loginemailuser", loginUser.getEmail());
+    	model.addAttribute("loginuserid", loginUser.getId());
 
         return "accesscontrol/form";
 
     }
 
+    /**
+     * Edita as permissões de um usuário selecionado
+     * @param id
+     * @param model
+     * @return
+     */
     @RequestMapping("/accesscontrol/edit/{id}")
     public String edit(@PathVariable Long id, Model model) {
 
         model.addAttribute("access", authoritiesService.get(id));
-    	model.addAttribute("username", user.getUsername());
-    	model.addAttribute("emailuser", user.getEmail());
-    	model.addAttribute("userid", user.getId());
+        
+    	model.addAttribute("loginusername", loginUser.getUsername());
+    	model.addAttribute("loginemailuser", loginUser.getEmail());
+    	model.addAttribute("loginuserid", loginUser.getId());
 
         return "accesscontrol/formEdit";
 
     }
     
+    /**
+     * Salva as permissões do usuário selecionado
+     * @param authorities
+     * @param authority
+     * @param ra
+     * @return
+     */
     @RequestMapping(value = "/accesscontrol/save", method = RequestMethod.POST)
     public String save(Authorities authorities , @RequestParam("authority") String authority, final RedirectAttributes ra) {   	    	
     	authorities.setAuthority(authority);

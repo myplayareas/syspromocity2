@@ -62,15 +62,15 @@ public class DashboardController {
     	totalCoupons = (int) this.couponService.count();
     	this.userName = principal.getName();
     	
-    	Users user = userService.getUserByUserName(userName);
+    	Users loginUser = userService.getUserByUserName(userName);
     	    	
     	model.addAttribute("totalUsers", totalUsers);
     	model.addAttribute("totalStores", totalStores);
     	model.addAttribute("totalPromotions", totalPromotions);
     	model.addAttribute("totalCoupons", totalCoupons);
-    	model.addAttribute("username", user.getUsername());
-    	model.addAttribute("emailuser", user.getEmail());
-    	model.addAttribute("userid", user.getId());
+    	model.addAttribute("loginusername", loginUser.getUsername());
+    	model.addAttribute("loginemailuser", loginUser.getEmail());
+    	model.addAttribute("loginuserid", loginUser.getId());
     	
         return "dashboard/index";
     }

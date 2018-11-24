@@ -31,8 +31,8 @@
                     <td th:text="${row.email}"></td>
                     <td th:text="${row.enabled}"></td>                    
                     <td>
-                    <span th:if="${row.id != userid}">
-                        <a th:href="${'/users/'+ userid +'/delete/friend/' + row.id}">Remover Amigo</a>
+                    <span th:if="${row.id != loginuserid}">
+                        <a th:href="${'/users/'+ loginuserid +'/delete/friend/' + row.id}">Remover Amigo</a>
                     </span>
                     </td>               
                 </tr>

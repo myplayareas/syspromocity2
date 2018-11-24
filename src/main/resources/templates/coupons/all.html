@@ -23,13 +23,19 @@
                     <th>Description</th>
                     <th>Discount</th>
                     <th>QRCode</th>
+                    <th>Imagem</th>
                     <th>Ações</th>
                 </tr>
                 <tr th:each="row : ${list}">
                     <td th:text="${row.id}"></td>
                     <td th:text="${row.description}"></td>
                     <td th:text="${row.discount}"></td>
-                    <td th:text="${row.qrCode}"></td> 
+                    <td th:text="${row.qrCode}"></td>
+                    <td>
+                     	<div class="form-group">                                   
+                    		<img alt="Image" th:src="${'/coupons/image/'+row.id}" width="50" height="50"/>                 
+                		</div>
+                    </td> 
                     <td>
                         <a th:href="${'/coupons/edit/' + row.id}">editar</a>
                     </td>

@@ -35,7 +35,7 @@ import br.ufc.great.syspromocity.util.GeradorSenha;
 public class UserController {
 
 	private UsersService userService;
-	private Users user;
+	private Users loginUser;
 	
 	@Autowired
 	public void setUserService(UsersService userServices){
@@ -44,28 +44,39 @@ public class UserController {
 
 	private void checkUser() {
 		User userDetails = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();		
-    	this.user = userService.getUserByUserName(userDetails.getUsername());
+    	this.loginUser = userService.getUserByUserName(userDetails.getUsername());
 	}
 	
+	/**
+	 * 
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/users")
 	public String index(Model model){
 		checkUser();    	
     	List<Users> list = userService.getAll();
     	
-    	model.addAttribute("username", user.getUsername());
-    	model.addAttribute("emailuser", user.getEmail());
-    	model.addAttribute("userid", user.getId());
-      	model.addAttribute("list", list);
+    	model.addAttribute("loginusername", loginUser.getUsername());
+    	model.addAttribute("loginemailuser", loginUser.getEmail());
+    	model.addAttribute("loginuserid", loginUser.getId());
+      	
+    	model.addAttribute("list", list);
 		
 		return "users/list";
 	}
 	
+	/**
+	 * Faz a paginação da lista de usuários
+	 * @param pageNumber
+	 * @param model
+	 * @return
+	 */
     @RequestMapping(value = "/users/{pageNumber}", method = RequestMethod.GET)
     public String list(@PathVariable Integer pageNumber, Model model) {
+    	checkUser();
     	Page<Users> page = this.userService.getList(pageNumber);
-
-		checkUser();    	
-
+		   
         int current = page.getNumber() + 1;
         int begin = Math.max(1, current - 5);
         int end = Math.min(begin + 10, page.getTotalPages());
@@ -74,26 +85,37 @@ public class UserController {
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current);
-        model.addAttribute("username", user.getUsername());
-    	model.addAttribute("emailuser", user.getEmail());
-    	model.addAttribute("userid", user.getId());
+        model.addAttribute("loginusername", loginUser.getUsername());
+    	model.addAttribute("loginemailuser", loginUser.getEmail());
+    	model.addAttribute("loginuserid", loginUser.getId());
         
         return "users/list";
     }
 
+    /**
+     * Faz o cadastro de um novo usuário
+     * @param model
+     * @return
+     */
     @RequestMapping("/users/add")
     public String add(Model model) {
 		checkUser();    	
     	
         model.addAttribute("user", new Users());
-        model.addAttribute("username", user.getUsername());
-    	model.addAttribute("emailuser", user.getEmail());
-    	model.addAttribute("userid", user.getId());
+        model.addAttribute("loginusername", loginUser.getUsername());
+    	model.addAttribute("loginemailuser", loginUser.getEmail());
+    	model.addAttribute("loginuserid", loginUser.getId());
     	
         return "users/form";
 
     }
 
+    /**
+     * Edita um usuário selecionado
+     * @param id
+     * @param model
+     * @return
+     */
     @RequestMapping("/users/edit/{id}")
     public String edit(@PathVariable Long id, Model model) {
 		checkUser();    	
@@ -101,9 +123,9 @@ public class UserController {
 		Users editUser = userService.get(id);
 		
         model.addAttribute("user", editUser);
-        model.addAttribute("username", editUser.getUsername());
-    	model.addAttribute("emailuser", editUser.getEmail());
-    	model.addAttribute("userid", editUser.getId());
+        model.addAttribute("loginusername", loginUser.getUsername());
+    	model.addAttribute("loginemailuser", loginUser.getEmail());
+    	model.addAttribute("loginuserid", loginUser.getId());
     	model.addAttribute("amountofcoupons", editUser.getAmountOfCoupons());
     	model.addAttribute("amountoffriends", editUser.getAmountOfFriends());
     	
@@ -111,21 +133,35 @@ public class UserController {
 
     }
 
+    /**
+     * Edita profile do usuário logado
+     * @param id
+     * @param model
+     * @return
+     */
     @RequestMapping("/users/edit/profile/{id}")
     public String editProfile(@PathVariable Long id, Model model) {
 		checkUser();    	
     	
-        model.addAttribute("user", user);
-        model.addAttribute("username", user.getUsername());
-    	model.addAttribute("emailuser", user.getEmail());
-    	model.addAttribute("userid", user.getId());
-    	model.addAttribute("amountofcoupons", user.getAmountOfCoupons());
-    	model.addAttribute("amountoffriends", user.getAmountOfFriends());
+        model.addAttribute("user", loginUser);
+        model.addAttribute("loginusername", loginUser.getUsername());
+    	model.addAttribute("loginemailuser", loginUser.getEmail());
+    	model.addAttribute("loginuserid", loginUser.getId());
+    	model.addAttribute("amountofcoupons", loginUser.getAmountOfCoupons());
+    	model.addAttribute("amountoffriends", loginUser.getAmountOfFriends());
     	
         return "users/formpwdProfile";
 
     }
     
+    /**
+     * Salva os dados de um usuário novo
+     * @param user
+     * @param password
+     * @param confirmPassword
+     * @param ra
+     * @return
+     */
     @RequestMapping(value = "/users/save", method = RequestMethod.POST)
     public String save(Users user, @RequestParam("password") String password, 
     		@RequestParam("confirmpassword") String confirmPassword, final RedirectAttributes ra) {
@@ -145,7 +181,7 @@ public class UserController {
     }
 
     /**
-     * Salva as alterações do usuário
+     * Salva as alterações do usuário editado
      * @param user novos dados do usuário
      * @param originalPassword senha original registrada no banco
      * @param newPassword nova senha passada pelo usuário
@@ -157,6 +193,8 @@ public class UserController {
     public String saveEdited(Users user, @RequestParam("password") String originalPassword, 
     		@RequestParam("newpassword") String newPassword, @RequestParam("confirmnewpassword") String confirmNewPassword, 
     		final RedirectAttributes ra) {
+    	
+    	checkUser();
     	
     	String recuperaPasswordBanco;
     	Users userOriginal = userService.get(user.getId());
@@ -181,26 +219,33 @@ public class UserController {
     	}
     }
     
+    /**
+     * Remove um usuário selecionado
+     * @param id
+     * @return
+     */
     @RequestMapping("/users/delete/{id}")
     public String delete(@PathVariable Long id) {
-
         userService.delete(id);
         return "redirect:/users";
-
     }
     
+    /**
+     * Lista os cupons de um usuário
+     * @param idUser
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/users/{idUser}/coupons", method = RequestMethod.GET)
     public String listCoupons(@PathVariable long idUser, Model model) {
-
+    	checkUser();
     	List<Coupon> coupons =  this.userService.get(idUser).getCouponList();
-
-		checkUser();    	
-
+		    	
         model.addAttribute("list", coupons);
         model.addAttribute("idUser", idUser);
-        model.addAttribute("username", user.getUsername());
-    	model.addAttribute("emailuser", user.getEmail());
-    	model.addAttribute("userid", user.getId());
+        model.addAttribute("loginusername", loginUser.getUsername());
+    	model.addAttribute("loginemailuser", loginUser.getEmail());
+    	model.addAttribute("loginuserid", loginUser.getId());
         
         return "users/listCoupons";
     }
@@ -212,20 +257,19 @@ public class UserController {
      */
     @RequestMapping(value = "/users/list", method = RequestMethod.GET)
     public String listAllUsers(Model model) {
-    	checkUser();
-    	
+    	checkUser();   	
     	List<Users> users =  this.userService.getAll();
     	
         model.addAttribute("list", users);
-        model.addAttribute("username", user.getUsername());
-    	model.addAttribute("emailuser", user.getEmail());
-    	model.addAttribute("userid", user.getId());
+        model.addAttribute("loginusername", loginUser.getUsername());
+    	model.addAttribute("loginemailuser", loginUser.getEmail());
+    	model.addAttribute("loginuserid", loginUser.getId());
         
         return "users/listAllUsers";
     }
     
     /**
-     * Dado um usuário ele adicionar um amigo
+     * Dado um usuário ele adiciona um amigo
      * @param idUser usuário logado
      * @param idFriend id do amigo
      * @param model
@@ -234,9 +278,8 @@ public class UserController {
      */
     @RequestMapping(value = "/users/{idUser}/add/friend/{idFriend}")
     public String addFriend(@PathVariable long idUser, @PathVariable long idFriend, Model model, final RedirectAttributes ra) {
-    	String mensagem="";
-    	checkUser();    
-    	
+    	checkUser();
+    	String mensagem="";    	        	
     	Users user = this.userService.get(idUser);
     	Users friend = this.userService.get(idFriend);
     	
@@ -271,15 +314,16 @@ public class UserController {
 		}
 
         model.addAttribute("list", listaAmigos);
-        model.addAttribute("username", user.getUsername());
-    	model.addAttribute("emailuser", user.getEmail());
-    	model.addAttribute("userid", user.getId());
+        
+        model.addAttribute("loginusername", loginUser.getUsername());
+    	model.addAttribute("loginemailuser", loginUser.getEmail());
+    	model.addAttribute("loginuserid", loginUser.getId());
         
         return "users/listFriends";
     }
 
     /**
-     * Dado um usuário logado, ele remove o amigo selcionado
+     * Dado um usuário logado, ele remove o amigo selecionado
      * @param idUser
      * @param idFriend
      * @param model
@@ -288,9 +332,9 @@ public class UserController {
      */
     @RequestMapping(value = "/users/{idUser}/delete/friend/{idFriend}")
     public String deleteFriend(@PathVariable long idUser, @PathVariable long idFriend, Model model, final RedirectAttributes ra) {
+    	checkUser();
     	String mensagem = "";
-    	checkUser();    
-    	
+    	        	
     	Users user = this.userService.get(idUser);
     	Users friend = this.userService.get(idFriend);
     	
@@ -306,21 +350,32 @@ public class UserController {
     	return "redirect:"+local;
     }
     
+    /**
+     * Pega a quantidade de amigos de um usuário
+     * @param idUser
+     * @return
+     * @throws IOException
+     */
     @RequestMapping(value = "/users/{idUser}/amount/friends")
     @ResponseBody
     public int getAmountOfFriends(@PathVariable(value = "idUser") Long idUser) throws IOException {
-    	Users user = this.userService.get(idUser);
-    	
+    	Users user = this.userService.get(idUser);    	
         return user.getAmountOfFriends();
     }
 
+    /**
+     * Pega a quantidade de cupons de um usuário
+     * @param idUser
+     * @return
+     * @throws IOException
+     */
     @RequestMapping(value = "/users/{idUser}/amount/coupons")
     @ResponseBody
     public int getAmountOfCoupons(@PathVariable(value = "idUser") Long idUser) throws IOException {
-    	Users user = this.userService.get(idUser);
-    	
+    	Users user = this.userService.get(idUser);    	
         return user.getAmountOfCoupons();
     }
-    //Implementar o profile do usuário https://nixmash.com/post/profile-image-uploads-the-spring-parts
+    
+    //TODO Implementar o profile do usuário https://nixmash.com/post/profile-image-uploads-the-spring-parts
 
 }
