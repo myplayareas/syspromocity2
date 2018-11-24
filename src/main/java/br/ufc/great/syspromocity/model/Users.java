@@ -44,6 +44,8 @@ public class Users extends AbstractModel<Long>{
 	@OneToMany
 	private List<Users> idFriendsList; 
 	
+	private String completename;
+	
 	public Users() {
 		this.idFriendsList = new LinkedList<Users>();
 	}
@@ -180,6 +182,14 @@ public class Users extends AbstractModel<Long>{
 
 	public int getAmountOfFriends() {
 		return this.getIdFriendsList().size();
+	}
+
+	public String getCompletename() {
+		return completename;
+	}
+
+	public void setCompletename(String completename) {
+		this.completename = completename;
 	}
 	
 }

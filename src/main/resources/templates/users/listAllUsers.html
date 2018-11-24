@@ -21,16 +21,20 @@
             <table class="table table-striped">
                 <tr>
                     <th>User name</th>
+                    <th>Nome</th>
                     <th>E-mail</th>
                     <th>Ativo</th>
+                    <th>Imagem</th>
                     <th>Ações</th>
                 </tr>
                 <tr th:each="row : ${list}">              
                 	<div th:if="${row.id != loginuserid}">
                 		<input id="id" name="id" th:value="${row.id}" type="hidden" />											
 						<td th:text="${row.username}"></td>
+						<td th:text="${row.completename}"></td>
 						<td th:text="${row.email}"></td>
 						<td th:text="${row.enabled}"></td>
+						<td><img alt="Image" th:src="${'/upload/image/users/'+row.id}" width="50" height="50" /></td>
 						<td><a th:href="${'/users/'+loginuserid+'/add/friend/' + row.id}">Adicionar como Amigo</a></td>
 					</div>
 				</tr>
