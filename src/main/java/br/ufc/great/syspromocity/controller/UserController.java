@@ -375,6 +375,26 @@ public class UserController {
     	Users user = this.userService.get(idUser);    	
         return user.getAmountOfCoupons();
     }
+ 
+	@RequestMapping(value = "/users/{idUser}/select/image")
+	public String selectImage(@PathVariable(value = "idUser") Long idUser, Model model){
+		checkUser();    	
+
+		Users editUser = userService.get(idUser);
+		
+        model.addAttribute("user", editUser);
+        model.addAttribute("loginusername", loginUser.getUsername());
+    	model.addAttribute("loginemailuser", loginUser.getEmail());
+    	model.addAttribute("loginuserid", loginUser.getId());
+    	model.addAttribute("idUser", editUser.getId());
+    	model.addAttribute("username", editUser.getUsername());
+    	model.addAttribute("completename", editUser.getCompletename());
+    	
+        return "users/formImage";
+
+		
+	}
+
     
     //TODO Implementar o profile do usuário https://nixmash.com/post/profile-image-uploads-the-spring-parts
 
