@@ -31,12 +31,25 @@
                 </li>
                 <li class="list-group-item">
                   <b>Amigos</b> <a class="pull-right"><spam th:text="${amountoffriends}"></spam></a>
-                </li>
+                </li>                                                
               </ul>
 
             </div>
             <!-- /.box-body -->
-          </div>
+            
+                <!-- /.box-header -->
+                <div class="box-body no-padding" style="">
+                  <ul class="users-list clearfix">
+					<li th:each="friend : ${listfriends}">              
+					    <input id="id" name="id" th:value="${friend.id}" type="hidden" />
+					    <img alt="Image" th:src="${'/upload/image/users/'+friend.id}" width="50" height="50" />
+					    <a class="users-list-name" href="#"><spam th:text="${friend.username}"></spam></a>
+					    <span class="users-list-date">Today</span>
+					</li>
+                  </ul>
+                 </div>
+                  <!-- /.users-list -->            
+    </div>
 	</div>
 	
 	<div class="col-md-9">
