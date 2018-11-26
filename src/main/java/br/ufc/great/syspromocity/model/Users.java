@@ -41,7 +41,7 @@ public class Users extends AbstractModel<Long>{
     inverseJoinColumns={@JoinColumn(name="coupon_id")})
 	private List<Coupon> couponList = new LinkedList<Coupon>();
 	
-	@OneToMany
+	@ManyToMany
 	private List<Users> idFriendsList; 
 	
 	private String completename;

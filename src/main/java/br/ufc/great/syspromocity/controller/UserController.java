@@ -151,6 +151,15 @@ public class UserController {
     public String editProfile(@PathVariable Long id, Model model) {
 		checkUser();    	
     	
+		Users user = this.userService.get(loginUser.getId());
+		List<Users> idFriends = user.getIdFriendsList();		
+		List<Users> listaAmigos = new LinkedList<Users>();
+		
+		for (Users ids : idFriends) {
+			listaAmigos.add(this.userService.get(ids.getId()));
+		}
+        model.addAttribute("listfriends", listaAmigos);
+	
         model.addAttribute("user", loginUser);
         model.addAttribute("loginusername", loginUser.getUsername());
     	model.addAttribute("loginemailuser", loginUser.getEmail());
