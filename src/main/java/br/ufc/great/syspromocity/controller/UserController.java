@@ -20,8 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.ufc.great.syspromocity.model.Authorities;
 import br.ufc.great.syspromocity.model.Coupon;
 import br.ufc.great.syspromocity.model.Users;
+import br.ufc.great.syspromocity.service.AuthoritiesService;
 import br.ufc.great.syspromocity.service.UsersService;
 import br.ufc.great.syspromocity.util.Constantes;
 import br.ufc.great.syspromocity.util.GeradorSenha;
@@ -36,10 +38,16 @@ public class UserController {
 
 	private UsersService userService;
 	private Users loginUser;
+	private AuthoritiesService authoritiesService;
 	
 	@Autowired
 	public void setUserService(UsersService userServices){
 		this.userService = userServices;
+	}
+	
+	@Autowired
+	public void setAuthoritiesService(AuthoritiesService authoritiesService) {
+		this.authoritiesService = authoritiesService;
 	}
 
 	private void checkUser() {
@@ -395,7 +403,64 @@ public class UserController {
 		
 	}
 
-    
-    //TODO Implementar o profile do usuário https://nixmash.com/post/profile-image-uploads-the-spring-parts
+	/**
+	 * Return registration form template
+	 * @param model
+	 * @param user
+	 * @return
+	 */
+	@RequestMapping(value = "/register", method = RequestMethod.GET)
+	public String showRegistrationPage(Model model){
+		//TODO é preciso zerar a sessão do usuário
+		model.addAttribute("user", new Users());		
+		return "/register";
+	}
 
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	public String processRegistrationForm(Model model, Users user, @RequestParam("password") String password, 
+    		@RequestParam("confirmpassword") String confirmPassword, @RequestParam("authority") String authority, 
+    		final RedirectAttributes ra) {
+		
+		String username = user.getUsername();
+		Users userExists = this.userService.getUserByUserName(username);
+		
+		if (userExists != null) {			
+			ra.addFlashAttribute("msgerro", "Usuário já existe!");
+			return "redirect:/register";
+		}else {	
+			//checa a senha do usuário 			
+			if (password.equals(confirmPassword)) {
+			  	String senhaCriptografada = new GeradorSenha().criptografa(password);
+
+			  	user.setPassword(senhaCriptografada);
+				user.setEnabled(true);
+				this.userService.save(user);
+				
+				Authorities authorities = new Authorities();
+				authorities.setUsername(username);	
+				
+				//checa o tipo do usuárioa
+				if (authority.equals("USER")) {				
+					authorities.setAuthority("USER");
+					Authorities save = authoritiesService.save(authorities);
+					model.addAttribute("msg", "Usuário registrado com sucesso!");
+					return "/login";				
+				}
+				
+				//checa o tipo do usuário
+				if (authority.equals("LOJISTA")) {			
+					authorities.setAuthority("LOJISTA");
+					Authorities save = authoritiesService.save(authorities);
+					model.addAttribute("msg", "Usuário lojista registrado com sucesso!");
+					return "/login";				
+				}	        	
+			}else {
+				ra.addFlashAttribute("msgerro", "Senha não confere!");
+				return "redirect:/register";
+			}			
+			
+		}
+		return "/login";
+	}
+	
 }
