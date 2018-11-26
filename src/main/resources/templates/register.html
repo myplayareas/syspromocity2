@@ -30,11 +30,17 @@
 <body class="hold-transition register-page">
 <div class="register-box">
   <div class="register-logo">
-    <a href="../../index2.html"><b>Sys</b>Promocity</a>
+    <a href="/login"><b>Sys</b>Promocity</a>
   </div>
 
   <div class="register-box-body">
     <p class="login-box-msg">Registrar um novo membro</p>
+    
+       <div th:if="${msgerro != null}">
+            <div class="callout callout-danger">
+                <p><spam th:text="${msgerro}"></spam></p> 
+            </div>
+        </div> 
 
     <form data-toggle="validator" role="form" th:action="@{/register}" th:object="${user}" method="POST">  
     	<input type="hidden" th:field="*{id}"/>   	
@@ -61,8 +67,8 @@
                 <div class="form-group">
                     <label for="authority">Tipo</label>                    
                     <select class="form-control" name="authority" id="authority" required="true">
-							<option value="LOJISTA">LOJISTA</option>
 							<option value="USER">USER</option>
+							<option value="LOJISTA">LOJISTA</option>							
 							<option value="GUEST">GUEST</option>
 					</select>
                 </div>

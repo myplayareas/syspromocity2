@@ -39,6 +39,11 @@
                 <p>Usuário ou senha estão inválidos.</p>
             </div>
         </div>
+        <div th:if="${msg != null}">
+	        <div class="callout callout-success">
+	  			<p><spam th:text="${msg}"></spam></p>  		
+			</div>
+		</div>
 
         <form th:action="@{/login}" method="post">
             <div class="form-group has-feedback">

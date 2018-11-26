@@ -418,14 +418,15 @@ public class UserController {
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String processRegistrationForm(Model model, Users user, @RequestParam("password") String password, 
-    		@RequestParam("confirmpassword") String confirmPassword, @RequestParam("authority") String authority) {
+    		@RequestParam("confirmpassword") String confirmPassword, @RequestParam("authority") String authority, 
+    		final RedirectAttributes ra) {
 		
 		String username = user.getUsername();
 		Users userExists = this.userService.getUserByUserName(username);
 		
-		if (userExists != null) {
-			model.addAttribute("msg", "Usuário já existe!");
-			return "/register";
+		if (userExists != null) {			
+			ra.addFlashAttribute("msgerro", "Usuário já existe!");
+			return "redirect:/register";
 		}else {	
 			//checa a senha do usuário 			
 			if (password.equals(confirmPassword)) {
@@ -454,15 +455,12 @@ public class UserController {
 					return "/login";				
 				}	        	
 			}else {
-				model.addAttribute("msg", "Senha não confere!");
-				return "/register";
+				ra.addFlashAttribute("msgerro", "Senha não confere!");
+				return "redirect:/register";
 			}			
 			
 		}
-		
 		return "/login";
 	}
 	
-    //TODO Implementar o profile do usuário https://nixmash.com/post/profile-image-uploads-the-spring-parts
-
 }
