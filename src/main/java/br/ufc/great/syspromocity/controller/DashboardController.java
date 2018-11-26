@@ -1,8 +1,12 @@
 package br.ufc.great.syspromocity.controller;
 
 import java.security.Principal;
+import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -72,7 +76,42 @@ public class DashboardController {
     	model.addAttribute("loginemailuser", loginUser.getEmail());
     	model.addAttribute("loginuserid", loginUser.getId());
     	
+    	System.out.println("Nome: " + principal.getName());
+    	
+    	this.getUserDetails();
+    	
         return "dashboard/index";
     }
+    
+    private void getUserDetails() {
+    	   UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	   System.out.println(userDetails.getPassword());
+    	   System.out.println(userDetails.getUsername());
+    	   System.out.println(userDetails.isEnabled());
+    	   System.out.println(userDetails.toString());
+    	   
+    	   Collection<GrantedAuthority> listaPermissoes = (Collection<GrantedAuthority>) userDetails.getAuthorities();
+    	   String regras="";
+    	   
+    	   for (GrantedAuthority elemento : listaPermissoes) {
+    		   String regra = elemento.getAuthority();
+    		   regras = regra + ", ";
+    	   }
+    	   System.out.println("Regras: " + regras);
+    	} 
+    
+    private boolean hasRole(String role) {
+    	  Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>)SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+    	  
+    	  boolean hasRole = false;
+    	  
+    	  for (GrantedAuthority authority : authorities) {
+    	     hasRole = authority.getAuthority().equals(role);
+    	     if (hasRole) {
+    		  break;
+    	     }
+    	  }
+    	  return hasRole;
+    	}  
 
 }
