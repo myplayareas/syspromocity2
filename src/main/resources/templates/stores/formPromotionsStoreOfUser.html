@@ -19,7 +19,7 @@
                 <a th:href="${'/stores/users/'+ loginuserid + '/promotions/'+ idStore}" type="button" class="btn btn-box-tool"><i class="fa fa-list-ul"></i></a>
             </div>
         </div>
-        <form data-toggle="validator" role="form" th:object="${promotion}" th:action="${'/stores/users/'+loginuserid +'/promotions/'+ idStore + 'save'}" method="post">        
+        <form data-toggle="validator" role="form" th:object="${promotion}" th:action="${'/stores/users/'+loginuserid +'/promotions/'+ idStore + '/save'}" method="post">        
             <div class="box-body">
                 <input type="hidden" th:field="*{id}"/>             
                 <div class="form-group">

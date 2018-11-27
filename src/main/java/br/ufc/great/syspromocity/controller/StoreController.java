@@ -498,7 +498,7 @@ public class StoreController {
      * @param ra
      * @return
      */
-    @RequestMapping(value = "/stores/users/{idUser}/promotions/{idStore}/save/", method = RequestMethod.POST)
+    @RequestMapping(value = "/stores/users/{idUser}/promotions/{idStore}/save", method = RequestMethod.POST)
     public String saveNewPromotionStoreOfUser(@PathVariable("idUser") Integer idUser, @PathVariable("idStore") Integer idStore,Promotion promotion, final RedirectAttributes ra) {    	
     	Store store = storeService.get(Long.valueOf(idStore));
     	

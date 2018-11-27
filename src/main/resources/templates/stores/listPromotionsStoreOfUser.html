@@ -10,7 +10,7 @@
 
 <ol class="breadcrumb">
     <li><a href="/"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="/stores"><i class="active"></i> Lojas</a></li>
+    <li><a th:href="${'/stores/users/'+loginuserid}"><i class="active"></i> Lojas</a></li>
     <li class="active">Promoções da Loja</li>
 </ol>
 </section>
@@ -20,7 +20,7 @@
         <div class="box-header with-border">
             <h3 class="box-title">Listagem</h3>
             <div class="box-tools pull-right">
-                <a th:href="${'/stores/'+idStore+'/promotions/add'}" type="button" class="btn btn-box-tool">
+                <a th:href="${'/stores/users/'+loginuserid+'/promotions/'+idStore+'/add'}" type="button" class="btn btn-box-tool">
                 <i class="fa fa-plus"></i>
                 </a> <br clear="all" />
             </div>

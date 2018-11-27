@@ -240,7 +240,7 @@ public class PromotionController {
     	new GeradorQRCode().gerar(promotionCode, new Constantes().filePathQRCode, idCoupon+".png");
 
         ra.addFlashAttribute("successFlash", "Promoção foi salva com novo cupom.");
-        return "redirect:/promotions";
+        return "redirect:/promotions/"+id+"/coupons";
     }
     
     /**
@@ -318,7 +318,7 @@ public class PromotionController {
         Promotion save = promotionService.save(promotion);
         
         ra.addFlashAttribute("successFlash", "Os novos dados do cupom foi salvo na Promoção.");
-        return "redirect:/promotions";
+        return "redirect:/promotions/"+idPromotion+"/coupons";
     }
 
     /**
