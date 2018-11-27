@@ -1,0 +1,76 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout">
+<head>
+<title>Dashboard</title>
+</head>
+<body>
+	<div layout:fragment="content">
+
+		<div class="box box-default">
+			<div class="box-header with-border">
+				<h3 class="box-title">Pesquisa</h3>
+				<div class="box-tools pull-right">
+					<div class="has-feedback">
+						<input type="text" class="form-control input-sm"
+							placeholder="Search..." /> <span
+							class="glyphicon glyphicon-search form-control-feedback"></span>
+					</div>
+				</div>
+				<!-- /.box-tools -->
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body">Faz a busca nos repositórios registrados</div>
+			<!-- /.box-body -->
+		</div>
+		<!-- /.box -->
+
+		<p class="lead">Dashboard Administrativo</p>
+
+		<div class="row">							
+			<div class="col-md-3 col-sm-6 col-xs-12">
+				<div class="info-box">
+					<!-- Apply any bg-* class to to the icon to color it -->
+					<span class="info-box-icon bg-yellow"><i
+						class="fa fa-user"></i></span>
+					<div class="info-box-content">
+						<span class="info-box-text"><a href="/users/list">Usuários</a></span> <span
+							class="info-box-number" th:text="${totalUsers}"></span>
+					</div>
+					<!-- /.info-box-content -->
+				</div>
+			</div>
+		</div>
+
+		<p class="lead">Tools Boxes</p>
+		<div class="row">
+			<div class="box box-solid box-info">
+				<div class="box-header">
+					<h3 class="box-title">Ferramenta 1</h3>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body">Realiza as ações de Mapa</div>
+	
+				<div id="mapa" style="height: 1000px; width: 1000px"></div>
+				<script src="/plugins/jQuery/jQuery-2.2.0.min.js"></script>
+				<!-- Maps API Javascript -->
+				<script
+					src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCNdm8tx4RTf02Xf0njartDv987Q_jjfxE"></script>
+	
+				<!-- Caixa de informação -->
+				<script src="/dist/js/infobox.js"></script>
+				<!-- Agrupamento dos marcadores -->
+				<script src="/dist/js/markerclusterer.js"></script>
+				<!-- Arquivo de inicialização do mapa -->
+				<script src="/dist/js/mapa.js"></script>
+	
+				<!-- /.box-body -->
+			</div>
+			<!-- /.box -->
+		</div>
+
+	</div>
+
+</body>
+</html>

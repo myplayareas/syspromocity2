@@ -1,0 +1,61 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sd="http://www.thymeleaf.org/spring-data" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout">
+<head>
+    <title>Lojas do Usuário</title>
+</head>
+
+<body>
+
+<section layout:fragment="header">
+<h1>Lojas do Lojista</h1>
+<ol class="breadcrumb">
+    <li><a href="/"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+    <li class="active">Lojas</li>
+</ol>
+</section>
+
+	<div layout:fragment="content">
+		<div class="box">
+			<div class="box-header with-border">
+				<h3 class="box-title">Listagem</h3>
+				<div class="box-tools pull-right">
+					<a href="/stores/users/add" type="button" class="btn btn-box-tool">
+					<i class="fa fa-plus"></i>
+					</a> <br clear="all" />
+				</div>
+			</div>
+			<div class="box-body no-padding">
+				<div th:if="${list != null}"> 
+					<table class="table table-striped">
+						<tr>
+							<th>ID</th>
+							<th>Name</th>
+							<th>Endereço</th>
+							<th>Cidade</th>
+							<th>Estado</th>
+							<th>Latitude</th>
+							<th>Longitude</th>
+							<th>Raio</th>
+							<th>Ações</th>
+						</tr>					
+						<tr th:each="row : ${list}">
+							<td th:text="${row.id}"></td>
+							<td th:text="${row.name}"></td>
+							<td th:text="${row.address}"></td>
+							<td th:text="${row.city}"></td>
+							<td th:text="${row.state}"></td>
+							<td th:text="${row.latitude}"></td>
+							<td th:text="${row.longitude}"></td>
+							<td th:text="${row.radius}"></td>
+							<td><a th:href="${'/stores/users/'+loginuserid+'/edit/' + row.id}">editar</a> - <a
+								th:href="${'/stores/users/'+loginuserid+'/delete/' + row.id}">excluir</a> - <a
+								th:href="${'/stores/users/' + loginuserid +  '/promotions/' + row.id}">Promoções</a></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</body>
+</html>

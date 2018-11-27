@@ -36,6 +36,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         		.antMatchers("/register").permitAll()
                 .antMatchers("/bootstrap/**", "/dist/**", "/plugins/**").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/accesscontrol/**").hasAnyAuthority("ADMIN")
+                .antMatchers("/users").hasAnyAuthority("ADMIN")
+                .antMatchers("/users/").hasAnyAuthority("ADMIN")
+                .antMatchers("/stores").hasAnyAuthority("ADMIN")
+                .antMatchers("/stores/").hasAnyAuthority("ADMIN")
+                .antMatchers("/promotions").hasAnyAuthority("ADMIN")
+                .antMatchers("/promotions/").hasAnyAuthority("ADMIN")
+                .antMatchers("/coupons").hasAnyAuthority("ADMIN")
+                .antMatchers("/coupons/").hasAnyAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and()
             .formLogin()
@@ -70,7 +79,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // add new user "user" with password "password" - password will be encrypted
         if(!userDetailsService.userExists("armando")) {
             List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+            authorities.add(new SimpleGrantedAuthority("ADMIN"));
             authorities.add(new SimpleGrantedAuthority("USER"));
+            authorities.add(new SimpleGrantedAuthority("STOREOWNER"));
             User userDetails = new User("armando", encoder.encode("armando"), authorities);
             userDetailsService.createUser(userDetails);
         }
