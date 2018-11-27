@@ -70,7 +70,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // add new user "user" with password "password" - password will be encrypted
         if(!userDetailsService.userExists("armando")) {
             List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+            authorities.add(new SimpleGrantedAuthority("ADMIN"));
             authorities.add(new SimpleGrantedAuthority("USER"));
+            authorities.add(new SimpleGrantedAuthority("STOREOWNER"));
             User userDetails = new User("armando", encoder.encode("armando"), authorities);
             userDetailsService.createUser(userDetails);
         }

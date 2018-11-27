@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.ufc.great.syspromocity.model.Coupon;
+import br.ufc.great.syspromocity.model.MyStores;
 import br.ufc.great.syspromocity.model.Promotion;
 import br.ufc.great.syspromocity.model.Store;
 import br.ufc.great.syspromocity.model.Users;
+import br.ufc.great.syspromocity.service.MyStoresService;
 import br.ufc.great.syspromocity.service.StoresService;
 import br.ufc.great.syspromocity.service.UsersService;
 
@@ -30,6 +32,7 @@ public class StoreController {
 	private List<Coupon> listCoupons;
 	private UsersService userService;
 	private Users loginUser; 
+	private MyStoresService myStoresService;
     
     @Autowired
     public void setStoreService(StoresService storeService) {
@@ -40,6 +43,11 @@ public class StoreController {
     public void setUserService(UsersService userService) {
     	this.userService = userService;
     }
+
+	@Autowired
+	public void setMyStoresService(MyStoresService myStoresService) {
+		this.myStoresService = myStoresService;
+	}
 
 	private void checkUser() {
 		User userDetails = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();  
@@ -171,7 +179,7 @@ public class StoreController {
      * @return
      */
     @RequestMapping("/stores/delete/{id}")
-    public String delete(@PathVariable Long id) {
+    public String delete(@PathVariable("id") Long id) {
         storeService.delete(id);
         return "redirect:/stores";
     }
@@ -321,5 +329,215 @@ public class StoreController {
         ra.addFlashAttribute("successFlash", "A promoção foi removida da lista.");
         return "redirect:/stores/"+idStore+"/promotions";
     }
+     
+    //mostrar um formulário para criar uma nova loja do usuário
+    /**
+     * Mostra o Formulário de nova loja do lojista 
+     * @param model
+     * @return
+     */
+    @RequestMapping("/stores/users/add")
+    public String showFormNewUsersStore(Model model) {
+    	checkUser();
+    	this.listPromotions = null;
+    	
+    	model.addAttribute("loginusername", loginUser.getUsername());
+    	model.addAttribute("loginemailuser", loginUser.getEmail());
+    	model.addAttribute("loginuserid", loginUser.getId());
+        model.addAttribute("store", new Store());
+        
+        return "stores/formMyStore";
+    }
+    
+    //cria e salva uma nova loja de um usuário
+    @RequestMapping(value="/stores/users/save", method = RequestMethod.POST)
+    public String saveNewUsersStore(Store store, final RedirectAttributes ra) {
+    	checkUser();
+    	
+    	//criar uma nova loja
+    	store.setPromotionList(this.listPromotions);
+        Store save = storeService.save(store);
+    	
+    	//Checa se já existe MyStores          
+        MyStores myStore = this.myStoresService.getMyStoresByUser(loginUser);
+        
+        //se myStore nao existe cria um novo
+        if (myStore == null) {
+        	myStore = new MyStores();
+        }
+        myStore.setUser(loginUser);    
+        myStore.addStore(store);
+        
+    	//salva a nova relação minhaLoja
+        this.myStoresService.save(myStore);
+    	ra.addFlashAttribute("successFlash", "Loja do lojista foi salva com sucesso.");
+    	
+    	String servico = "/stores/users/"+loginUser.getId();
+    	
+    	return "redirect:"+servico;
+    }
+    
+    @RequestMapping(value = "/stores/users/{idUser}")
+    public String StoresOfUser(Model model, @PathVariable("idUser") Long idUser) {
+    	checkUser();    	    	
+    	List<Store> myStoresList = new LinkedList<Store>();
+    	MyStores myStore = new MyStores();
+    	
+    	Users user = this.userService.get(idUser);
+		myStore = this.myStoresService.getMyStoresByUser(user); 
+    	
+		if (myStore != null) {
+			myStoresList = myStore.getStoreList();
+		}
+		
+    	model.addAttribute("loginusername", loginUser.getUsername());
+    	model.addAttribute("loginemailuser", loginUser.getEmail());
+    	model.addAttribute("loginuserid", loginUser.getId());
+    	model.addAttribute("list", myStoresList);
+    	
+        return "stores/listStoresOfUser";
+    }
 
+    /**
+     * Edita uma loja selecionada de um usuário
+     * @param id
+     * @param model
+     * @return
+     */
+    @RequestMapping("/stores/users/{idUser}/edit/{idStore}")
+    public String editUserStore(@PathVariable Long idUser, @PathVariable Long idStore, Model model) {
+    	checkUser();
+    	this.listPromotions = storeService.get(idStore).getPromotionList();
+    	
+    	model.addAttribute("loginusername", loginUser.getUsername());
+    	model.addAttribute("loginemailuser", loginUser.getEmail());
+    	model.addAttribute("loginuserid", loginUser.getId());    	
+        model.addAttribute("store", storeService.get(idStore));
+        
+        return "stores/formStoreOfUser";
+
+    }
+
+    //cria e salva uma nova loja de um usuário
+    @RequestMapping(value="/stores/users/save/edited", method = RequestMethod.POST)
+    public String saveEditedUsersStore(Store store, final RedirectAttributes ra) {
+    	checkUser();
+    	
+    	store.setPromotionList(this.listPromotions);
+        Store save = storeService.save(store);
+    	
+        ra.addFlashAttribute("successFlash", "Loja do lojista foi salva com sucesso.");
+    	
+    	String servico = "/stores/users/"+loginUser.getId();
+    	
+    	return "redirect:"+servico;
+    }
+
+    /**
+     * Remove uma loja selecionada do usuário
+     * @param id
+     * @return
+     */
+    @RequestMapping("/stores/users/{idUser}/delete/{idStore}")
+    public String deleteStoreOfUser(@PathVariable("idUser") Long idUser, @PathVariable("idStore") Long idStore) {
+        storeService.delete(idStore);
+    	String servico = "/stores/users/"+idUser;
+    	
+    	return "redirect:"+servico;
+
+    }
+    
+    /**
+     * Lista as promoções de uma loja selecionada do usuário
+     * @param id
+     * @param model
+     * @return
+     */
+    @RequestMapping(value="/stores/users/{idUser}/promotions/{idStore}")
+    public String listPromotionsStoreOfUser(@PathVariable("idUser") Long idUser, @PathVariable("idStore") Long idStore, Model model) {
+    	checkUser();
+    	List<Promotion> listPromotionsAux = storeService.get(Long.valueOf(idStore)).getPromotionList();    	    	
+    	this.listPromotions = listPromotionsAux; 
+    	
+    	model.addAttribute("loginusername", loginUser.getUsername());
+    	model.addAttribute("loginemailuser", loginUser.getEmail());
+    	model.addAttribute("loginuserid", loginUser.getId());
+    	
+    	model.addAttribute("idStore", idStore);
+        model.addAttribute("list", listPromotionsAux);
+        
+    	return "stores/listPromotionsStoreOfUser";
+    }
+
+    /**
+     * Cadastra uma nova promoção em uma loja selecionada do usuário
+     * @param id
+     * @param model
+     * @return
+     */
+    @RequestMapping("/stores/users/{idUser}/promotions/{idStore}/add")
+    public String addPromotionStoreOfUser(@PathVariable("idUser") Integer idUser, @PathVariable("idStore") Integer idStore, Model model) {    	
+    	checkUser();
+    	List<Coupon> emptyList = new LinkedList<Coupon>();
+       	this.listCoupons = emptyList; 
+    	
+    	model.addAttribute("loginusername", loginUser.getUsername());
+    	model.addAttribute("loginemailuser", loginUser.getEmail());
+    	model.addAttribute("loginuserid", loginUser.getId());
+    	
+    	model.addAttribute("idStore", idStore);
+        model.addAttribute("promotion", new Promotion());
+        
+        return "stores/formPromotionsStoreOfUser";
+    }
+
+    /**
+     * Salva uma nova promoção na loja selecionada do usuário
+     * @param id
+     * @param promotion
+     * @param ra
+     * @return
+     */
+    @RequestMapping(value = "/stores/users/{idUser}/promotions/{idStore}/save/", method = RequestMethod.POST)
+    public String saveNewPromotionStoreOfUser(@PathVariable("idUser") Integer idUser, @PathVariable("idStore") Integer idStore,Promotion promotion, final RedirectAttributes ra) {    	
+    	Store store = storeService.get(Long.valueOf(idStore));
+    	
+    	store.getPromotionList().add(promotion);    	
+        Store save = storeService.save(store);        
+        ra.addFlashAttribute("successFlash", "Loja foi salva com nova promoção.");
+        
+        return "redirect:/stores/users/"+idUser+"/promotions/"+idStore;
+    }
+
+    
+    /**
+     * Salva uma promoção editada em uma loja de um usuario
+     * @param idStore
+     * @param idPromotion
+     * @param promotion
+     * @param ra
+     * @return
+     */
+    @RequestMapping(value = "/stores/users/{idUser}/promotions/{idStore}/save/{idPromotion}", method = RequestMethod.POST)
+    public String saveEditedPromotion(@PathVariable("idUser") Integer idUser, @PathVariable("idStore") Integer idStore,@PathVariable("idPromotion") Integer idPromotion,Promotion promotion, final RedirectAttributes ra) {
+    	Store store = storeService.get(Long.valueOf(idStore));
+    	
+    	//Procura a promoção, com os dados antigos, na lista de promoção da loja
+    	for (Promotion element : store.getPromotionList()) {
+    		if (element.getId()==Long.valueOf(idPromotion)) {
+    			//remove a promoção antiga da lista de promoções
+    			store.getPromotionList().remove(element);
+    			break;
+    		}    		
+    	}
+    	
+    	store.getPromotionList().add(promotion);
+    	
+    	//salva a loja com os novos dados de promoão
+        Store save = storeService.save(store);
+        
+        ra.addFlashAttribute("successFlash", "Os novos dados da promoção foi salva na Loja do usuário.");
+        return "redirect:/stores/users/"+idUser+"/promotions/"+idStore;
+    }
+    
 }

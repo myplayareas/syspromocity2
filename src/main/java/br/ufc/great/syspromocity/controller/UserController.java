@@ -24,6 +24,7 @@ import br.ufc.great.syspromocity.model.Authorities;
 import br.ufc.great.syspromocity.model.Coupon;
 import br.ufc.great.syspromocity.model.Users;
 import br.ufc.great.syspromocity.service.AuthoritiesService;
+import br.ufc.great.syspromocity.service.MyStoresService;
 import br.ufc.great.syspromocity.service.UsersService;
 import br.ufc.great.syspromocity.util.Constantes;
 import br.ufc.great.syspromocity.util.GeradorSenha;
@@ -39,6 +40,7 @@ public class UserController {
 	private UsersService userService;
 	private Users loginUser;
 	private AuthoritiesService authoritiesService;
+	private MyStoresService myStoresService;
 	
 	@Autowired
 	public void setUserService(UsersService userServices){
@@ -48,6 +50,11 @@ public class UserController {
 	@Autowired
 	public void setAuthoritiesService(AuthoritiesService authoritiesService) {
 		this.authoritiesService = authoritiesService;
+	}
+	
+	@Autowired
+	public void setMyStoresService(MyStoresService myStoresService) {
+		this.myStoresService = myStoresService;
 	}
 
 	private void checkUser() {

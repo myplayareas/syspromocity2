@@ -34,57 +34,18 @@
 					<!-- Apply any bg-* class to to the icon to color it -->
 					<span class="info-box-icon bg-red"><i class="fa fa-cart-plus"></i></span>
 					<div class="info-box-content">
-						<span class="info-box-text"><a href="/stores">Lojistas</a></span> 
+						<span class="info-box-text"><a th:href="${'/stores/users/'+ loginuserid}">Minhas Lojas</a></span> 
 						<span class="info-box-number" th:text="${totalStores}"></span>
 					</div>					
 					<!-- /.info-box-content -->
 				</div>				
 			</div>
 
-			<div class="col-md-3 col-sm-6 col-xs-12">
-				<div class="info-box">
-					<!-- Apply any bg-* class to to the icon to color it -->
-					<span class="info-box-icon bg-red"><i class="fa fa-star-o"></i></span>
-					<div class="info-box-content">
-						<span class="info-box-text"><a href="/promotions">Promoções</a></span> 
-						<span class="info-box-number" th:text="${totalPromotions}"></span>
-					</div>
-					<!-- /.info-box-content -->
-				</div>
-			</div>
-
-			<div class="col-md-3 col-sm-6 col-xs-12">
-				<div class="info-box">
-					<!-- Apply any bg-* class to to the icon to color it -->
-					<span class="info-box-icon bg-yellow"><i
-						class="fa fa-files-o"></i></span>
-					<div class="info-box-content">
-						<span class="info-box-text"><a href="/coupons/all">Cupons</a></span> <span
-							class="info-box-number" th:text="${totalCoupons}"></span>
-					</div>
-					<!-- /.info-box-content -->
-				</div>
-				
-			</div>
-
-			<div class="col-md-3 col-sm-6 col-xs-12">
-				<div class="info-box">
-					<!-- Apply any bg-* class to to the icon to color it -->
-					<span class="info-box-icon bg-yellow"><i
-						class="fa fa-user"></i></span>
-					<div class="info-box-content">
-						<span class="info-box-text"><a href="/users">Usuários</a></span> <span
-							class="info-box-number" th:text="${totalUsers}"></span>
-					</div>
-					<!-- /.info-box-content -->
-				</div>
-			</div>
-
-
 		</div>
 
 		<p class="lead">Tools Boxes</p>
-		<div class="row">	
+		<div class="row">
+		
 				<div class="box box-solid box-info">
 					<div class="box-header">
 						<h3 class="box-title">Ferramenta 1</h3>
@@ -108,7 +69,6 @@
 					<!-- /.box-body -->
 				</div>
 				<!-- /.box -->
-
 
 		</div>
 

@@ -30,7 +30,7 @@ function abrirInfoBox(id, marker) {
 
 function carregarPontos() {
 	
-	$.getJSON('dist/js/mapsStores.json', function(pontos) {
+	$.getJSON('/dist/js/mapsStores.json', function(pontos) {
 		
 		var latlngbounds = new google.maps.LatLngBounds();
 		
@@ -40,7 +40,7 @@ function carregarPontos() {
 				position: new google.maps.LatLng(pontoDegree),
 				title: ponto.name,
 				label: ponto.name, 
-				icon: 'dist/img/marcador.png'
+				icon: '/dist/img/marcador.png'
 			});
 			
 			var myOptions = {
@@ -61,7 +61,7 @@ function carregarPontos() {
 			
 		});
 		
-		var markerCluster = new MarkerClusterer(map, markers, {imagePath: 'dist/img/m'});
+		var markerCluster = new MarkerClusterer(map, markers, {imagePath: '/dist/img/m'});
 		
 		map.fitBounds(latlngbounds);
 		

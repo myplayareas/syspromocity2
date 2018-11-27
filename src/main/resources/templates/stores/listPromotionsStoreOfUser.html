@@ -1,0 +1,54 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sd="http://www.thymeleaf.org/spring-data" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout">
+<head>
+    <title>Promoções da Loja ID</title>
+</head>
+<body>
+
+<section layout:fragment="header">
+<h1 th:text="${'Promoções da Loja '+idStore}"></h1>
+
+<ol class="breadcrumb">
+    <li><a href="/"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+    <li><a href="/stores"><i class="active"></i> Lojas</a></li>
+    <li class="active">Promoções da Loja</li>
+</ol>
+</section>
+
+<div layout:fragment="content">
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title">Listagem</h3>
+            <div class="box-tools pull-right">
+                <a th:href="${'/stores/'+idStore+'/promotions/add'}" type="button" class="btn btn-box-tool">
+                <i class="fa fa-plus"></i>
+                </a> <br clear="all" />
+            </div>
+        </div>
+        <div class="box-body no-padding">
+            <table class="table table-striped">
+                <tr>
+                    <th>ID</th>
+                    <th>Description</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Ações</th>
+                </tr>
+                <tr th:each="row : ${list}">
+                    <td th:text="${row.id}"></td>
+                    <td th:text="${row.description}"></td>
+                    <td th:text="${row.fromDate}"></td>
+                    <td th:text="${row.toDate}"></td> 
+                    <td>
+                        <a th:href="${'/stores/edit/'+idStore+'/promotions/edit/' + row.id}">editar</a> -
+                        <a th:href="${'/stores/edit/'+idStore+'/promotions/delete/' + row.id}">excluir</a> -
+                        <a th:href="${'/promotions/'+row.id+'/coupons'}">Cupons</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</div>
+</body>
+</html>
