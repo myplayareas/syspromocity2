@@ -36,6 +36,44 @@
                     <label for="qrCode">QRCode</label>
                     <input type="text" required="true" class="form-control" th:field="*{qrCode}" id="qrCode" />
                 </div>
+
+                <div class="form-group">
+                    <label for="limitedToUse">Limite de uso</label>
+                    <input type="text" required="true" class="form-control" th:field="*{limitedToUse}" id="limitedToUse" />
+                </div>
+                <div class="form-group">
+                    <label for="limitedToUse">Usados</label>
+                    <input type="text" required="true" class="form-control" th:field="*{used}" id="used" />
+                </div>
+                
+                <div class="form-group">
+                    <label for="Ativado">Ativado</label>
+                    <select class="form-control"
+							required="false" th:field="*{activated}" id="activated">
+							<option value="true">true</option>
+							<option value="false">false</option>
+					</select>                    
+                </div>
+
+                <div class="form-group">
+                    <label for="Consumido">Consumido</label>
+                    <select class="form-control"
+							required="false" th:field="*{consumed}" id="consumed">
+							<option value="true">true</option>
+							<option value="false">false</option>
+					</select>                    
+                </div>
+
+                 <div class="form-group">
+                    <label for="awarded">Premiado</label>
+                    <select class="form-control"
+							required="false" th:field="*{awarded}" id="awarded">
+							<option value="true">true</option>
+							<option value="false">false</option>
+					</select>                    
+                </div>
+                
+                
                 <div class="form-group">                                   
                     <img alt="Image" th:src="${'/coupons/image/'+idCoupon}" width="250" height="250"/>                 
                 </div>

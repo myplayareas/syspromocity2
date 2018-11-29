@@ -25,7 +25,9 @@
                 <tr>
                     <th>ID</th>
                     <th>Description</th>
-                    <th>Discount</th>
+                    <th>Discount</th>                    
+                    <th>Limite</th>
+                    <th>Disponíveis</th>
                     <th>QRCode</th>
                     <th>Ações</th>
                 </tr>
@@ -33,6 +35,8 @@
                     <td th:text="${row.id}"></td>
                     <td th:text="${row.description}"></td>
                     <td th:text="${row.discount}"></td>
+                    <td th:text="${row.limitedToUse}"></td>
+                  	<td th:text="${row.limitedToUse - row.used}"></td>
                     <td th:text="${row.qrCode}"></td> 
                     <td>
                         <a th:href="${'/coupons/edit/' + row.id}">editar</a> -
