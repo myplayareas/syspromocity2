@@ -21,6 +21,10 @@ public class Coupon extends AbstractModel<Long>{
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	List<Users> users;
 	
+	private boolean activated=false;
+	
+	private boolean consumed=false;
+	
 	public Coupon() {
 	}
 	
@@ -60,5 +64,21 @@ public class Coupon extends AbstractModel<Long>{
 
 	public void setUsers(List<Users> users) {
 		this.users = users;
+	}
+
+	public boolean isActivated() {
+		return activated;
+	}
+
+	public void setActivated(boolean activated) {
+		this.activated = activated;
+	}
+
+	public boolean isConsumed() {
+		return consumed;
+	}
+
+	public void setConsumed(boolean consumed) {
+		this.consumed = consumed;
 	}
 }

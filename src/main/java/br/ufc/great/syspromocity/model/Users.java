@@ -32,8 +32,8 @@ public class Users extends AbstractModel<Long>{
 	
 	private String email;
 	//private GPSPoint location;
-	private double latitude;
-	private double longitude;
+	private double latitude=0;
+	private double longitude=0;
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name="users_coupon",
