@@ -23,6 +23,7 @@
                     <th>ID</th>
                     <th>Descrição</th>
                     <th>Desconto</th>
+                    <th>Disponíveis</th>
                     <th>QRCode</th>
                     <th>Imagem</th>
                 </tr>
@@ -30,6 +31,7 @@
                     <td th:text="${row.id}"></td>
                     <td th:text="${row.description}"></td>
                     <td th:text="${row.discount}"></td>
+                    <td th:text="${row.limitedToUse - row.used}"></td>
                     <td th:text="${row.qrCode}"></td>
 					<td><img alt="Image" th:src="${'/coupons/image/'+row.id}" width="50" height="50" /></td>
 					</tr>

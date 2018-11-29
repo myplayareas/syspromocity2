@@ -23,6 +23,7 @@
                     <th>Description</th>
                     <th>Discount</th>
                     <th>QRCode</th>
+                    <th>Disponíveis</th>
                     <th>Imagem</th>
                     <th>Ações</th>
                 </tr>
@@ -30,6 +31,7 @@
                     <td th:text="${row.id}"></td>
                     <td th:text="${row.description}"></td>
                     <td th:text="${row.discount}"></td>
+                    <td th:text="${row.limitedToUse - row.used}"></td>
                     <td th:text="${row.qrCode}"></td>
                     <td>
                      	<div class="form-group">                                   

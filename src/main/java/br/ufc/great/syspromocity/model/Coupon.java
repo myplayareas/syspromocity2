@@ -1,5 +1,6 @@
 package br.ufc.great.syspromocity.model;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -18,14 +19,20 @@ public class Coupon extends AbstractModel<Long>{
 	private float discount;
 	private String qrCode;
 	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	List<Users> users;
+	@ManyToMany(fetch = FetchType.EAGER)
+	List<Users> users = new LinkedList<Users>();
 	
-	private boolean activated=false;
+	private boolean activated; // o cupom foi ativado por 3 amigos
+	private boolean consumed; //quando o limite de vezes é alcançado, o cupom não pode mais ser consumido
+	private boolean awarded; //o cupom se torna premiado quando 3 amigos ativam ao mesmo tempo dentro da vizinhança
 	
-	private boolean consumed=false;
+	private int limitedToUse=4; //limite de vezes que pode ser usado
+	private int used=0;
 	
 	public Coupon() {
+		this.activated=false;
+		this.consumed=false;
+		this.awarded=false;
 	}
 	
 	public Coupon(Long id, String description, String qrCode) {
@@ -81,4 +88,52 @@ public class Coupon extends AbstractModel<Long>{
 	public void setConsumed(boolean consumed) {
 		this.consumed = consumed;
 	}
+
+	public int getLimitedToUse() {
+		return limitedToUse;
+	}
+
+	public void setLimitedToUse(int limit) {
+		this.limitedToUse = limit;
+	}
+	
+	public boolean incrementUse() {
+		if (used < limitedToUse) {
+			used = used + 1;
+			return true;
+		}
+		this.consumed=true;
+		return false;
+	}
+
+	public boolean isAwarded() {
+		return awarded;
+	}
+
+	public void setAwarded(boolean awarded) {
+		this.awarded = awarded;
+	}
+
+	public int getUsed() {
+		return used;
+	}
+	
+    /**
+     * Checa se um cupom é valido
+     * @param IdCoupon
+     * @return
+     */
+    public boolean isValidCoupon() {
+    	boolean valid=false;    	    	    	
+
+    	//Não foi ativado, não foi consumido (um cupom tem um limite de uso) e não foi premiado
+    	if (!isActivated() && !isConsumed() && !isAwarded()) {
+    		valid = true;
+    	}else {
+    		valid = false;
+    	}    		
+
+    	return valid;
+    }
+
 }
