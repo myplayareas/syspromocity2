@@ -11,6 +11,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 @Entity
 public class Coupon extends AbstractModel<Long>{
 	
@@ -19,7 +22,8 @@ public class Coupon extends AbstractModel<Long>{
 	private float discount;
 	private String qrCode;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@ManyToMany(fetch = FetchType.LAZY)
 	List<Users> users = new LinkedList<Users>();
 	
 	private boolean activated; // o cupom foi ativado por 3 amigos

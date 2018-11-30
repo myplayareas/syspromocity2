@@ -3,16 +3,18 @@ package br.ufc.great.syspromocity.model;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 /**
  * Classe modelo de Usuário
@@ -35,15 +37,19 @@ public class Users extends AbstractModel<Long>{
 	private double latitude=0;
 	private double longitude=0;
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@JsonBackReference
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name="users_coupon",
     joinColumns={@JoinColumn(name="users_id")},
     inverseJoinColumns={@JoinColumn(name="coupon_id")})
 	private List<Coupon> couponList = new LinkedList<Coupon>();
 	
-	@ManyToMany
-	private List<Users> idFriendsList; 
-	
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@JsonBackReference
+	@ManyToMany(fetch = FetchType.LAZY)
+ 	private List<Users> idFriendsList = new LinkedList<Users>();
+		
 	private String completename;
 	
 	public Users() {
@@ -117,7 +123,9 @@ public class Users extends AbstractModel<Long>{
 	}
 
 	public void addCoupon(Coupon coupon) {
-		this.couponList.add(coupon);
+		if (!this.alreadyCoupon(coupon)) {
+			this.couponList.add(coupon);
+		}
 	}
 
 	/**
@@ -191,5 +199,15 @@ public class Users extends AbstractModel<Long>{
 	public void setCompletename(String completename) {
 		this.completename = completename;
 	}
-	
+
+	public boolean alreadyCoupon(Coupon idCoupon) {
+		//percorre a lista de cupons e checa se o cupom já está nela
+		for (Coupon element : this.couponList) {
+			if (element.getId() == idCoupon.getId()) {
+				return true;
+			}
+		}
+		return false;
+	}
+		
 }
