@@ -13,7 +13,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.google.gson.Gson;
 
 import br.ufc.great.syspromocity.model.Coupon;
 import br.ufc.great.syspromocity.model.MyStores;
@@ -23,6 +26,7 @@ import br.ufc.great.syspromocity.model.Users;
 import br.ufc.great.syspromocity.service.MyStoresService;
 import br.ufc.great.syspromocity.service.StoresService;
 import br.ufc.great.syspromocity.service.UsersService;
+import br.ufc.great.syspromocity.util.LocationStore;
 
 @Controller
 public class StoreController {
@@ -539,5 +543,26 @@ public class StoreController {
         ra.addFlashAttribute("successFlash", "Os novos dados da promoção foi salva na Loja do usuário.");
         return "redirect:/stores/users/"+idUser+"/promotions/"+idStore;
     }
+    
+    @RequestMapping(value="/stores/map/locations", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public String getStoresLocations() {
+    	Gson gson = new Gson();
+    	
+		List<Store> stores = storeService.getAll();
+		List<LocationStore> locations = new LinkedList<LocationStore>();
+		
+		if (stores != null) {
+			for (Store store : stores) {
+				LocationStore location = new LocationStore(store);
+				locations.add(location);    				
+			}
+		}
+		
+		String json = gson.toJson(locations);
+	
+        return json;
+}
+
     
 }

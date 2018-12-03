@@ -3,6 +3,15 @@ var idInfoBoxAberto;
 var infoBox = [];
 var markers = [];
 
+var this_js_script = $('script[src*=mapa]'); // or better regexp to get the file name..
+
+var my_var_1 = this_js_script.attr('data-my_var_1');   
+
+if (typeof my_var_1 === "undefined" ) {
+   var my_var_1 = '/dist/js/mapsStores.json';
+}
+
+
 function initialize() {	
 	var centro = {lat:-3.7281295, lng:-38.4954897};
 
@@ -30,7 +39,7 @@ function abrirInfoBox(id, marker) {
 
 function carregarPontos() {
 	
-	$.getJSON('/dist/js/mapsStores.json', function(pontos) {
+	$.getJSON(my_var_1, function(pontos) {
 		
 		var latlngbounds = new google.maps.LatLngBounds();
 		
@@ -40,7 +49,7 @@ function carregarPontos() {
 				position: new google.maps.LatLng(pontoDegree),
 				title: ponto.name,
 				label: ponto.name, 
-				icon: '/dist/img/marcador.png'
+				icon: '/dist/img/pin.png'
 			});
 			
 			var myOptions = {
