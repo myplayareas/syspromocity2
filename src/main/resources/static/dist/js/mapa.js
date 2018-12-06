@@ -7,10 +7,14 @@ var this_js_script = $('script[src*=mapa]'); // or better regexp to get the file
 
 var my_var_1 = this_js_script.attr('data-my_var_1');   
 
+var loja = '';
+var qtdPromocoes = '';
+var contentString = ''; 
+var nomesPromocoes = '';
+
 if (typeof my_var_1 === "undefined" ) {
    var my_var_1 = '/dist/js/mapsStores.json';
 }
-
 
 function initialize() {	
 	var centro = {lat:-3.7281295, lng:-38.4954897};
@@ -57,11 +61,29 @@ function carregarPontos() {
 				pixelOffset: new google.maps.Size(-50, 0)
         	};
 
+			loja = ponto.name;
+			qtdPromocoes = ponto.promotions;
+			nomesPromocoes = ponto.promotionsNames;
+			
+			contentString = '<div id="content">'+
+			'<div id="siteNotice">'+
+			'</div>'+
+			'<h2 id="firstHeading" class="firstHeading">' + loja + '</h2>'+
+			'<div id="bodyContent">'+
+			'<h3>Quantidade de promoções: ' + qtdPromocoes + '</h3>' +  
+			'<h3>Promoções: ' + nomesPromocoes + '</h3>'+
+			'</div>'+
+			'</div>';
+			
+			var infowindow = new google.maps.InfoWindow({
+				content: contentString
+				});
+			
 			infoBox[ponto.id] = new InfoBox(myOptions);
 			infoBox[ponto.id].marker = marker;
 			
 			infoBox[ponto.id].listener = google.maps.event.addListener(marker, 'click', function (e) {
-				abrirInfoBox(ponto.id, marker);
+				infowindow.open(map, marker);
 			});
 			
 			markers.push(marker);

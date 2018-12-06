@@ -5,7 +5,7 @@
 
 	<groupId>br.ufc.great.syspromocity</groupId>
 	<artifactId>syspromocity</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>v1.2.1</version>
 	<packaging>jar</packaging>
 
 	<name>SysPromocity</name>

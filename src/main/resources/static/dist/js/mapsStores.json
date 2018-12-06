@@ -7,7 +7,9 @@
     "address": "",
     "city": "",
     "radius": 1,
-    "state": ""
+    "state": "", 
+    "promotions": 0, 
+    "promotionsNames":""
   },
   {
     "id": 2,
@@ -17,7 +19,9 @@
     "address": "",
     "city": "",
     "radius": 1,
-    "state": ""
+    "state": "", 
+    "promotions": 0, 
+    "promotionsNames":""
   },
   {
     "id": 3,
@@ -27,7 +31,9 @@
     "address": "",
     "city": "",
     "radius": 1,
-    "state": ""
+    "state": "", 
+    "promotions": 0, 
+    "promotionsNames":""
   },
   {
     "id": 4,
@@ -37,7 +43,9 @@
     "address": "",
     "city": "",
     "radius": 1,
-    "state": ""
+    "state": "", 
+    "promotions": 0, 
+    "promotionsNames":""
   },
   {
     "id": 5,
@@ -47,7 +55,9 @@
     "address": "",
     "city": "",
     "radius": 1,
-    "state": ""
+    "state": "", 
+    "promotions": 0, 
+    "promotionsNames":""
   },
   {
     "id": 6,
@@ -57,7 +67,9 @@
     "address": "",
     "city": "",
     "radius": 1,
-    "state": ""
+    "state": "", 
+    "promotions": 0, 
+    "promotionsNames":""
   },
   {
     "id": 7,
@@ -67,7 +79,9 @@
     "address": "",
     "city": "",
     "radius": 1,
-    "state": ""
+    "state": "", 
+    "promotions": 0, 
+    "promotionsNames":""
   },
   {
     "id": 8,
@@ -77,8 +91,10 @@
     "address": "",
     "city": "",
     "radius": 1,
-    "state": ""
-  },
+    "state": "", 
+    "promotions": 0, 
+    "promotionsNames": ""
+ 	},
   {
     "id": 9,
     "latitude": -3.7283864,
@@ -87,7 +103,9 @@
     "address": "",
     "city": "",
     "radius": 1,
-    "state": ""
+    "state": "", 
+    "promotions": 0, 
+    "promotionsNames":""
   },
   {
     "id": 10,
@@ -97,6 +115,8 @@
     "address": "",
     "city": "",
     "radius": 1,
-    "state": ""
+    "state": "", 
+    "promotions": 0, 
+    "promotionsNames":""
  }
 ]

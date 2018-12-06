@@ -11,6 +11,8 @@ public class LocationStore {
     private String city;
     private double radius;
     private String state;
+    private int promotions;
+    private String promotionsNames;
     
     public LocationStore() {
     	
@@ -25,6 +27,8 @@ public class LocationStore {
     	this.city = store.getCity();
     	this.radius = store.getRadius();
     	this.state = store.getState();
+    	this.promotions = store.amountOfPromotions();
+    	this.promotionsNames = store.getNamesOfPromotions();
     }
     
 	public Long getId() {
@@ -74,6 +78,22 @@ public class LocationStore {
 	}
 	public void setState(String state) {
 		this.state = state;
+	}
+
+	public int getPromotions() {
+		return promotions;
+	}
+
+	public void setPromotions(int promotions) {
+		this.promotions = promotions;
+	}
+
+	public String getPromotionsNames() {
+		return promotionsNames;
+	}
+
+	public void setPromotionsNames(String promotionsNames) {
+		this.promotionsNames = promotionsNames;
 	}    
 
 }

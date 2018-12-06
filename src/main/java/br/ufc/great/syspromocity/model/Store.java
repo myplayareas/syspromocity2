@@ -94,4 +94,22 @@ public class Store extends AbstractModel<Long>{
 		this.longitude = longitude;
 	}
 	
+	public int amountOfPromotions() {
+		return this.PromotionList.size();
+	}
+	
+	public String getNamesOfPromotions() {
+		String promotionName = "[";
+		
+		for (Promotion promotion : this.PromotionList) {
+			promotionName = promotionName + promotion.getDescription() + ",";
+		}
+		
+		if (this.PromotionList.size() > 0) {
+			promotionName = promotionName.substring(0, promotionName.length() - 1);			
+		}
+		promotionName = promotionName + "]";
+		return promotionName;
+	}
+	
 }
