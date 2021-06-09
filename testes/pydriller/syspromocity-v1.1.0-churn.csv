@@ -1,0 +1,29 @@
+file,codechurn
+docs/telas/Tela 1 - Login.png,0
+docs/telas/Tela 10 - Usuario Lojista.png,0
+docs/telas/Tela 11 - Lojista cadastra sua loja.png,0
+docs/telas/Tela 12 - Lojista cadastra promocao.png,0
+docs/telas/Tela 13 - Lojista edita um cupom ja cadastrado.png,0
+docs/telas/Tela 14 - Usuario comum.png,0
+docs/telas/Tela 2 - Autoregistro.png,0
+docs/telas/Tela 3 - Admin.png,0
+docs/telas/Tela 4 - Admin Lojas.png,0
+docs/telas/Tela 5 - Admin Cupons.png,0
+docs/telas/Tela 6 - Admin profile.png,0
+docs/telas/Tela 7 - Meus Cupons.png,0
+docs/telas/Tela 8 - Usuarios disponiveis.png,0
+docs/telas/Tela 9 - Meus amigos.png,0
+coupons/10.png,0
+coupons/7.png,0
+coupons/8.png,0
+coupons/9.png,0
+src/main/java/br/ufc/great/syspromocity/model/Coupon.java,79
+src/main/java/br/ufc/great/syspromocity/model/Users.java,18
+src/main/resources/templates/coupons/form.html,38
+src/main/resources/templates/coupons/list.html,4
+src/main/resources/templates/coupons/all.html,2
+src/main/resources/templates/promotions/listCoupons.html,2
+src/main/resources/templates/users/listCoupons.html,2
+src/main/java/br/ufc/great/syspromocity/controller/UserController.java,6
+README.md,1
+src/main/resources/sql/security.sql,6

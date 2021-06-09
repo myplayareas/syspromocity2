@@ -1,0 +1,9 @@
+file,codechurn
+pom.xml,0
+src/main/java/br/ufc/great/syspromocity/model/Store.java,18
+src/main/java/br/ufc/great/syspromocity/util/LocationStore.java,20
+src/main/resources/static/dist/js/mapa.js,22
+src/main/resources/static/dist/js/mapsStores.json,20
+src/main/resources/templates/dashboard/indexStoreOwner.html,0
+src/main/resources/templates/dashboard/indexUser.html,0
+src/main/resources/templates/login.html,0

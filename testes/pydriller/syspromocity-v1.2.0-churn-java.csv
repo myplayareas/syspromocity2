@@ -1,0 +1,3 @@
+file,churn
+src/main/java/br/ufc/great/syspromocity/controller/StoreController.java,25
+src/main/java/br/ufc/great/syspromocity/util/LocationStore.java,79

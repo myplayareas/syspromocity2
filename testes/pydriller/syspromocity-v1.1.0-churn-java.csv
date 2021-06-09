@@ -1,0 +1,4 @@
+file,churn
+src/main/java/br/ufc/great/syspromocity/model/Coupon.java,79
+src/main/java/br/ufc/great/syspromocity/model/Users.java,18
+src/main/java/br/ufc/great/syspromocity/controller/UserController.java,6
