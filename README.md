@@ -15,6 +15,8 @@ Features
 Sobre as operações para execução da aplicação
 ---
 
+Obs: Esta aplicação foi compilada e testada com a versão java 8
+
 1. Faça o clone do repositório.
 
 2. É preciso ter o mysql 5 instalado na sua instância.
