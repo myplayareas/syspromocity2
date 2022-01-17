@@ -1,6 +1,8 @@
 # Promocity
 Aplicação cliente que manipula o banco do promocity (http://www.github.com/armandossrecife/promocity). 
 
+![License](https://img.shields.io/badge/License-BSD%202--Clause-orange.svg) 
+
 Features
 ---
 
